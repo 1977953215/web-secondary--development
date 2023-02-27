@@ -1,19 +1,7 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "id": "9e1c31ea-9241-4951-9cd1-b08a8abff2b9",
-  "type": "app",
-  "main": "app.1486bfb9.js",
-=======
-  "id": "168269df-974c-45dd-ad86-dc77091707cb",
-  "type": "app",
-  "main": "app.baffa840.js",
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
-=======
   "id": "e08b4713-a231-4ab0-813c-5e3a487dcd4a",
   "type": "app",
   "main": "app.97ad3790.js",
->>>>>>> 9c010413887b42431339af720d151a0c7ebc82c5
   "version": "2",
   "props": {
     "type": "customize",

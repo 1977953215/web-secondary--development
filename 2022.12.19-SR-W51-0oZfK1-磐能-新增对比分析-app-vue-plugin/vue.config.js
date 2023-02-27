@@ -4,18 +4,11 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       "/api": {
-<<<<<<< HEAD
-<<<<<<< HEAD
         target: "https://zhny.hn.sgcc.com.cn/",
-=======
-=======
-        target: "https://zhny.hn.sgcc.com.cn/",
->>>>>>> 9c010413887b42431339af720d151a0c7ebc82c5
         // target: "http://10.15.70.123:12203",
         // target: "http://10.15.70.38:18080/",
         target: "http://121.36.134.217:47264/",
         // target: "http://10.15.111.15:12345/",
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
         changeOrigin: true,
         pathRewrite: {
           "/api": ""

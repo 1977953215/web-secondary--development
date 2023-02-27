@@ -1,38 +1,11 @@
 <template>
   <div :id="id" :ref="id" style="width: 100%; background-color: #fff">
     <div style="display: flex">
-<<<<<<< HEAD
-      <span style="line-height: 80px; margin-right: 5px; margin-left: 15px; font-weight: 700; font-size: 14px">日期选择:</span
-      ><el-date-picker
-        v-model="dataPicker"
-        type="daterange"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        @change="dateChange"
-        :picker-options="pickerOptions"
-      >
-=======
       <span
         style="line-height: 80px; margin-right: 5px; margin-left: 15px; font-weight: 700; font-size: 14px">日期选择:</span><el-date-picker
         v-model="dataPicker" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" range-separator="至"
         start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" :picker-options="pickerOptions">
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
       </el-date-picker>
-=======
-        <span
-          style="line-height: 80px; margin-right: 5px; margin-left: 15px; font-weight: 700; font-size: 14px">日期选择:</span><el-date-picker
-          v-model="dataPicker" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" :picker-options="pickerOptions">
-        </el-date-picker>
->>>>>>> 9c010413887b42431339af720d151a0c7ebc82c5
-=======
-      </el-date-picker>
->>>>>>> e722fa827f9859848fabc859d1a87af73f747e09
     </div>
     <p class="chartsTitle">等效时数对比图</p>
     <div style="height: 400px; width: 100%" id="contrastCharts"></div>
@@ -41,55 +14,33 @@
         已选电站在{{ this.dataPicker[0] }}至 {{ this.dataPicker[1] }}时间段内
         <br />
         累计等效时数值最大的电站为【{{ this.allData.max_equivalent_hours_name }}】，最大值为【{{
-<<<<<<< HEAD
-          isNaN(Number(this.allData.max_equivalent_hours).toFixed(2)) ? "" : Number(this.allData.max_equivalent_hours).toFixed(2) + "h"
+          isNaN(Number(this.allData.max_equivalent_hours).toFixed(2)) ? "" :
+          Number(this.allData.max_equivalent_hours).toFixed(2) + "h"
         }}】，
         <br />
         累计等效时数值最小的电站为【{{ this.allData.min_equivalent_hours_name }}】，最小值为【{{
-          isNaN(Number(this.allData.min_equivalent_hours).toFixed(2)) ? "" : Number(this.allData.min_equivalent_hours).toFixed(2) + "h"
-        }}】，
-        <br />
-        已选电站的累计等效时数平均值为【{{ isNaN(Number(this.allData.maxAvg).toFixed(2)) ? "" : Number(this.allData.maxAvg).toFixed(2) + "h" }}】
-=======
-  isNaN(Number(this.allData.max_equivalent_hours).toFixed(2)) ? "" :
-  Number(this.allData.max_equivalent_hours).toFixed(2) + "h"
-        }}】，
-        <br />
-        累计等效时数值最小的电站为【{{ this.allData.min_equivalent_hours_name }}】，最小值为【{{
-  isNaN(Number(this.allData.min_equivalent_hours).toFixed(2)) ? "" :
-  Number(this.allData.min_equivalent_hours).toFixed(2) + "h"
+          isNaN(Number(this.allData.min_equivalent_hours).toFixed(2)) ? "" :
+          Number(this.allData.min_equivalent_hours).toFixed(2) + "h"
         }}】，
         <br />
         已选电站的累计等效时数平均值为【{{ isNaN(Number(this.allData.maxAvg).toFixed(2)) ? "" : Number(this.allData.maxAvg).toFixed(2) +
-        "h" }}】
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
+          "h" }}】
       </span>
       <span v-else>
         已选设备在{{ this.dataPicker[0] }}至 {{ this.dataPicker[1] }}时间段内
         <br />
         累计等效时数值最大的设备为【{{ this.allData.max_equivalent_hours_name }}】，最大值为【{{
-<<<<<<< HEAD
-          isNaN(Number(this.allData.max_equivalent_hours).toFixed(2)) ? "" : Number(this.allData.max_equivalent_hours).toFixed(2) + "h"
+          isNaN(Number(this.allData.max_equivalent_hours).toFixed(2)) ? "" :
+          Number(this.allData.max_equivalent_hours).toFixed(2) + "h"
         }}】，
         <br />
         累计等效时数值最小的设备为【{{ this.allData.min_equivalent_hours_name }}】，最小值为【{{
-          isNaN(Number(this.allData.min_equivalent_hours).toFixed(2)) ? "" : Number(this.allData.min_equivalent_hours).toFixed(2) + "h"
-        }}】，
-        <br />
-        已选设备的累计等效时数平均值为【{{ isNaN(Number(this.allData.maxAvg).toFixed(2)) ? "" : Number(this.allData.maxAvg).toFixed(2) + "h" }}】
-=======
-  isNaN(Number(this.allData.max_equivalent_hours).toFixed(2)) ? "" :
-  Number(this.allData.max_equivalent_hours).toFixed(2) + "h"
-        }}】，
-        <br />
-        累计等效时数值最小的设备为【{{ this.allData.min_equivalent_hours_name }}】，最小值为【{{
-  isNaN(Number(this.allData.min_equivalent_hours).toFixed(2)) ? "" :
-  Number(this.allData.min_equivalent_hours).toFixed(2) + "h"
+          isNaN(Number(this.allData.min_equivalent_hours).toFixed(2)) ? "" :
+          Number(this.allData.min_equivalent_hours).toFixed(2) + "h"
         }}】，
         <br />
         已选设备的累计等效时数平均值为【{{ isNaN(Number(this.allData.maxAvg).toFixed(2)) ? "" : Number(this.allData.maxAvg).toFixed(2) +
-        "h" }}】
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
+          "h" }}】
       </span>
     </div>
   </div>
@@ -284,36 +235,16 @@ export default {
             if (Array.isArray(params)) {
               max = Math.max.apply(
                 Math,
-<<<<<<< HEAD
-                params.map((item) => {
-                  return item.value;
-=======
                 params.map((item, i) => {
                   if (i != 0) {
                     return item.value;
                   }
                 }).filter(item => {
                   return item != undefined && item !== null
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
                 })
               );
               min = Math.min.apply(
                 Math,
-<<<<<<< HEAD
-                params.map((item) => {
-                  return item.value;
-                })
-              );
-              for (var i = 0, l = params.length; i < l; i++) {
-                avg += Number(params[i].value);
-              }
-              avg = (avg / params.length).toFixed(3);
-              relVal += `<div>&nbsp;&nbsp;&nbsp;<span>平均值</span><span style='float:right'>${avg}h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>`;
-              for (var i = 0, l = params.length; i < l; i++) {
-                relVal += `<div>${params[i].marker}${name[i]}&nbsp;&nbsp;&nbsp;<span style='float:right;'>&nbsp;&nbsp;${
-                  params[i].value == max ? "[max]" : params[i].value == min ? "[min]" : "      "
-                }</span><span style='float:right'>${params[i].value}h</span></div>`;
-=======
                 params.map((item, i) => {
                   if (i != 0) {
                     return item.value;
@@ -338,7 +269,6 @@ export default {
                   relVal += `<div>${params[i].marker}${name[i]}&nbsp;&nbsp;&nbsp;<span style='float:right;'>&nbsp;&nbsp;${params[i].value == max ? "[max]" : params[i].value == min ? "[min]" : "      "
                     }</span><span style='float:right'>${params[i].value}h</span></div>`;
                 }
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
               }
             }
             return relVal;
@@ -552,10 +482,7 @@ export default {
   background: "#fff";
   float: left;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 69eb67e03c216fa71c95da16445a144fb956b746
 /deep/.el-date-editor {
   margin-top: 20px !important;
 }
