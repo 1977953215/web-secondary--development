@@ -1,0 +1,344 @@
+// 最外层
+.outermest_matter {
+   width: 100%;
+   height: 100%;
+   .matter_title {
+      height: 22px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 1000;
+      color: rgb(51, 51, 51);
+   }
+   .el-table {
+      border: 1px solid #dadde5;
+      border-radius: 4px;
+   }
+   .el-table::before {
+      display: none;
+   }
+   .el-table::after {
+      display: none;
+   }
+
+   .el-table__empty-block {
+      margin: 37px 0 37px 0;
+   }
+   .el-table__empty-text {
+      svg {
+         top: 0;
+      }
+   }
+   .empty_title {
+      margin-top: -17px;
+      font-size: 14px;
+      color: #b8bac0;
+      height: 22px;
+      line-height: 22px;
+   }
+
+   // 表格头部样式
+   .el-table__header {
+      padding-bottom: 6px;
+      th {
+         padding: 4px 0;
+         border: none;
+         color: #333;
+         div {
+            padding: 0 !important;
+            height: 32px;
+            line-height: 32px;
+            background: #f3f4f5;
+            font-weight: normal;
+         }
+      }
+      th:first-child {
+         border-bottom-left-radius: 2px;
+         border-top-left-radius: 2px;
+         padding-left: 5px;
+      }
+      th:nth-last-child(2) {
+         border-bottom-right-radius: 2px;
+         border-top-right-radius: 2px;
+         padding-right: 5px;
+      }
+   }
+   // 去除头部底部横线
+   .el-table td.el-table__cell,
+   .el-table th.el-table__cell.is-leaf {
+      border: none;
+   }
+   // 表格行样式
+   .el-table__row {
+      td {
+         padding: 5px;
+         height: 50px;
+         line-height: 50px;
+      }
+      .el-input__inner {
+         border-radius: 4px;
+         height: 40px;
+         line-height: 40px;
+         padding: 4px 11px !important;
+      }
+      div {
+         padding: 0;
+         font-size: 14px;
+      }
+   }
+   // 表格悬浮样式
+   .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+      background: rgba(26, 121, 255, 0.1);
+   }
+   // form表单
+   .el-form-item {
+      margin-bottom: 0 !important;
+   }
+   // 输入框
+   .el-input__inner {
+      padding: 0 5px !important;
+   }
+   // 计算按钮
+   .event_count {
+      margin-right: 10px;
+   }
+   // 底部按钮
+   .bottom_button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // 按钮
+      .el-button {
+         margin: 0 20px;
+         padding: 10px 35px;
+      }
+   }
+}
+
+// 表格页脚
+.table_footer {
+   text-align: center;
+   // background: #fafafa;
+   padding: 17px 16px 19px 16px;
+   // 页脚按钮
+   .footer_button {
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px #dedfe0 dashed;
+      height: 32px;
+      line-height: 32px;
+      &:hover {
+         color: #81befe;
+         border-color: #81befe;
+      }
+   }
+}
+
+// 新增物料弹窗
+.matter_dialog {
+   // 行
+   .el-row {
+      margin-bottom: 25px;
+   }
+   // 栅格
+   .el-col {
+      display: flex;
+      p {
+         width: 100px;
+         height: 32px;
+         line-height: 32px;
+      }
+   }
+   // 查询按钮
+   .query_button {
+      padding-left: 2% !important;
+      .el-button {
+         padding-left: 20px;
+         padding-right: 20px;
+      }
+   }
+   // 分页
+   .pagination_box {
+      text-align: right;
+      margin-top: 15px;
+   }
+   .el-input__inner {
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+   }
+}
+
+// 转换关系盒子
+.transform_box {
+   margin: 20px 0;
+   height: 90px;
+   .el-row {
+      margin: 10px 0;
+   }
+   // 单位转换标题
+   .unit_title {
+      height: 40px;
+      line-height: 40px;
+      font-size: 15px;
+      text-align: center;
+      font-weight: bold;
+   }
+   // 单位转换行样式
+   .el-col {
+      display: flex;
+      p {
+         width: 85px;
+         height: 40px;
+         line-height: 40px;
+         text-align: center;
+      }
+      .el-input {
+         width: 100%;
+      }
+   }
+}
+
+// 计算弹窗
+.count_dialog {
+   // 弹窗体
+   .el-dialog__body {
+      padding-bottom: 0;
+   }
+
+   // 汇总计算
+   .gather_box {
+      margin-top: 20px;
+      // 行样式
+      .outer_input {
+         width: 100%;
+         display: flex;
+         margin: 20px 0;
+         height: 40px;
+         line-height: 40px;
+         div:nth-child(1) {
+            margin-left: 30px;
+            width: 170px;
+            box-sizing: border-box;
+         }
+         div:nth-child(2) {
+            width: 50%;
+         }
+      }
+   }
+
+   // 外层汇总计算按钮
+   .gather_button {
+      display: flex;
+      width: 100%;
+      margin-left: 10px;
+      // 按钮
+      .el-button {
+         padding: 10px 25px;
+      }
+   }
+
+   // 外层底部按钮
+   .bottom_button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // 按钮
+      .el-button {
+         margin: 0 20px;
+         padding: 10px 35px;
+      }
+   }
+
+   // 编辑按钮
+   .event_count {
+      margin-right: 10px;
+   }
+}
+
+// 公式弹窗
+.formula_dialog {
+   // 内层选择器标题
+   .el-col {
+      text-align: left;
+      height: 40px;
+      line-height: 40px;
+   }
+   p {
+      text-align: center;
+   }
+   // 输入框
+   .el-input {
+      width: 100%;
+   }
+   // 内层选择器
+   .el-select {
+      width: 80%;
+   }
+   // 公式模板
+   .inner_template {
+      display: flex;
+      height: 40px;
+      line-height: 40px;
+      margin: 20px 0;
+      text-align: left;
+      div:nth-child(1) {
+         text-align: center;
+      }
+   }
+   // 参数
+   .inner_params,
+   .inner_remarks {
+      .title {
+         height: 40px;
+         line-height: 40px;
+         text-align: center;
+      }
+      .row_box {
+         padding-left: 13.5% !important;
+         box-sizing: border-box;
+      }
+      .params_content {
+         display: flex;
+         margin: 10px 0;
+         padding: 0 !important;
+         .el-input__inner {
+            width: 90%;
+         }
+         .content_title {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+         }
+      }
+   }
+   // 备注
+   .inner_remarks {
+      .row_box {
+         height: 40px;
+         line-height: 40px;
+      }
+   }
+   // 外层底部按钮
+   .bottom_button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // 按钮
+      .el-button {
+         margin: 0 20px;
+         padding: 10px 35px;
+      }
+   }
+}
+
+// 红色字体
+.red_text {
+   .el-input__inner {
+      color: red;
+   }
+}
+// 黑色字体
+.black_text {
+   .el-input__inner {
+      color: #111;
+   }
+}
