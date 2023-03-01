@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import { Carousel, CarouselItem } from "element-ui";
-import Vue from "vue";
+// import { Carousel, CarouselItem } from "element-ui";
+// import Vue from "vue";
 import { Main, DesignConfiguration } from "@/components";
 import Options from "./Options.vue";
 import { mockCustomConfig, mockChangeCustomConfig } from "./mockData.js";
 import Utils from "@/utils";
 
-Vue.use(Carousel);
-Vue.use(CarouselItem);
+// Vue.use(Carousel);
+// Vue.use(CarouselItem);
 
 export default {
    name: "Development",

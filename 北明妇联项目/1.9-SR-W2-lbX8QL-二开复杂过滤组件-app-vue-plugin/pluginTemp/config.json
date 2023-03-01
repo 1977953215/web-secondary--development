@@ -1,7 +1,7 @@
 {
   "id": "44210ff9-6465-40e7-96c3-b0d7e67a5e0b",
   "type": "app",
-  "main": "app.6f924dd5.js",
+  "main": "app.0d096560.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -15,6 +15,6 @@
     ]
   },
   "configuration": true,
-  "requirement-number": "需求编号",
-  "requirement-name": "需求名称"
+  "requirement-number": "SR-W2-lbX8QL",
+  "requirement-name": "二开复杂过滤组件"
 }

@@ -17,6 +17,7 @@ export default {
       isConfig: Boolean,
       onConfigChange: Function,
       mainInit: Function,
+      changeAppVariables: Function,
    },
    data() {
       return {};

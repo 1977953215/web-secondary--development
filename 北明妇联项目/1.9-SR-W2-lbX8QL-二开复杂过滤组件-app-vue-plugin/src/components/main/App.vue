@@ -1,18 +1,38 @@
 <template>
-   <div :id="id" ref="app-secondary" class="app-secondary">
-      <van-dropdown-menu active-color="#1989fa" :overlay="true" :lock-scroll="false">
-         <van-dropdown-item :title="cityTitle" class="dropdown_city" v-model="city" :options="cityList" @change="changeCityDropDown" />
+   <div :id="id" ref="app-secondary" class="app-secondary outermest_filter">
+      <!-- <van-dropdown-menu active-color="#1989fa" :overlay="true" close-on-click-overlay id="dropdown_menu">
+         <van-dropdown-item :title="cityTitle" class="dropdown_city">
+            <van-cell center>
+               <template #right-icon>
+                  <van-cascader v-model="city" :options="cityList" :show-header="false" :field-names="fieldNames" @change="changeCityDropDown" />
+               </template>
+            </van-cell>
+         </van-dropdown-item>
          <van-dropdown-item :title="typeTitle" v-model="type" :options="typeList" @change="changeTypeDropDown" />
          <van-dropdown-item :title="dateTitle" v-model="date" :options="dateList" @change="changeDateDropDown" />
+      </van-dropdown-menu> -->
+
+      <van-dropdown-menu active-color="#1989fa" :overlay="false" close-on-click-overlay>
+         <van-dropdown-item :title="cityTitle" @open="openDropMenu('city')" />
+         <van-dropdown-item :title="typeTitle" @open="openDropMenu('type')" />
+         <van-dropdown-item :title="dateTitle" @open="openDropMenu('date')" />
       </van-dropdown-menu>
+
+      <van-popup v-model="popupIsShow" round position="bottom">
+         <van-cascader v-if="cascaderType == 'city'" v-model="city" :show-header="false" :options="cityList" :field-names="fieldNames" @change="changeCityDropDown" />
+         <van-cascader v-if="cascaderType == 'type'" v-model="type" :show-header="false" :options="typeList" @change="changeTypeDropDown" />
+         <van-cascader v-if="cascaderType == 'date'" v-model="date" :show-header="false" :options="dateList" @change="changeDateDropDown" />
+      </van-popup>
    </div>
 </template>
 
 <script>
 import "./app.less";
-import { queryAssetById, queryAreaByApi, jsSdkConfig, queryAddress } from "../../api/asset";
+import { queryCityData, queryTypeData } from "../../api/asset";
 
-// import VConsole from "vconsole";
+import VConsole from "vconsole";
+
+import qs from "querystringify";
 
 export default {
    name: "Main",
@@ -26,6 +46,8 @@ export default {
       intlGetKey: Function,
       history: Object,
       mainInit: Function,
+      appVariables: Array,
+      changeAppVariables: Function,
    },
 
    data() {
@@ -36,6 +58,13 @@ export default {
          cityTitle: "城市",
          cityList: [],
 
+         // 级联选择器字段
+         fieldNames: {
+            text: "cityname",
+            value: "citycode",
+            children: "children",
+         },
+
          type: "",
          typeTitle: "类型",
          typeList: [],
@@ -43,21 +72,33 @@ export default {
          date: "",
          dateTitle: "时间",
          dateList: [
+            { text: "无", value: "clear" },
             { text: "近一个月", value: "0" },
             { text: "近三个月", value: "1" },
             { text: "近半年", value: "2" },
          ],
+
+         urlSearch: "",
+
+         // 弹出层开关
+         popupIsShow: false,
+         // 级联选择器类型
+         cascaderType: "",
       };
    },
 
    mounted() {
       // new VConsole();
 
+      this.urlSearch = qs.parse(window.location.search);
+
       // 事件注册
       this.mainInit(this);
 
-      // 获取接口数据
-      this.getDataByApi();
+      // 获取城市数据
+      this.getCityData();
+      // 获取类型数据
+      this.getTypeData();
    },
 
    methods: {
@@ -80,87 +121,234 @@ export default {
          return tableData;
       },
 
-      // 获取城市/类型资产数据
-      getDataByApi() {
-         // 请求类型数据
-         queryAssetById("64c4b0e0-4d4f-ea0a-49f1-70de1fc941f6").then((res) => {
-            let resData = this.translatePlatformDataToJsonArray(res);
-            resData.forEach((item) => {
-               this.typeList.push({
+      // 对象数组转树形数据
+      resetTreeData(data) {
+         let leval4 = [];
+         let leval3 = [];
+         let leval2 = [];
+         let leval1 = [];
+         let leval0 = [];
+
+         data.forEach((item) => {
+            if (item.leval == "4") {
+               leval4.push(item);
+            } else if (item.leval == "3") {
+               leval3.push(item);
+            } else if (item.leval == "2") {
+               leval2.push(item);
+            } else if (item.leval == "1") {
+               leval1.push(item);
+            } else if (item.leval == "0") {
+               leval0.push(item);
+            }
+         });
+
+         leval1.forEach((item) => {
+            item.children = [];
+            item.children = leval0.filter((e) => {
+               return e.parentcode == item.citycode;
+            });
+         });
+
+         leval2.forEach((item) => {
+            item.children = [];
+            item.children = leval1.filter((e) => {
+               return e.parentcode == item.citycode;
+            });
+         });
+
+         leval3.forEach((item) => {
+            item.children = [];
+            item.children = leval2.filter((e) => {
+               return e.parentcode == item.citycode;
+            });
+         });
+
+         leval4.forEach((item) => {
+            item.children = [];
+            item.children = leval3.filter((e) => {
+               return e.parentcode == item.citycode;
+            });
+         });
+
+         return leval4;
+      },
+
+      // 获取城市数据
+      getCityData(areaCode) {
+         // 获取缓存数据
+         let treeData = window.localStorage.getItem("cityDataList");
+         // 生成参数
+         let dataForm = {
+            queryCondition: {
+               queryColums: ["citycode", "parentcode", "cityname", "leval"],
+            },
+            orderBy: "citycode",
+            orderSort: "DESC",
+         };
+         // 如果存在缓存数据
+         if (treeData) {
+            let newDate = Date.parse(new Date());
+            let yesDate = JSON.parse(treeData).time;
+            // 判断时间
+            if (yesDate - newDate < -86400000) {
+               console.log("复杂过滤组件-已过期");
+               queryCityData(dataForm).then((res) => {
+                  // 处理数据
+                  this.cityList = this.resetTreeData(res.data.results);
+                  // 创建缓存数据
+                  let localData = {
+                     time: moment(new Date()).format("yyyy-MM-DD HH:MM:ss"),
+                     data: this.cityList,
+                  };
+                  // 添加缓存数据
+                  window.localStorage.setItem("cityDataList", JSON.stringify(localData));
+                  this.addDefaultValue(areaCode);
+               });
+            } else {
+               console.log("复杂过滤组件-未过期");
+               this.cityList = JSON.parse(treeData).data;
+               this.addDefaultValue(areaCode);
+            }
+         } else {
+            // 获取数据
+            queryCityData(dataForm).then((res) => {
+               // 处理数据
+               this.cityList = this.resetTreeData(res.data.results);
+               // 创建缓存数据
+               let localData = {
+                  // time: moment(new Date()).format("yyyy-MM-DD HH:MM:ss"),
+                  time: Date.parse(new Date("2023-2-27 10:30:00")),
+                  data: this.cityList,
+               };
+               // 添加缓存数据
+               window.localStorage.setItem("cityDataList", JSON.stringify(localData));
+               this.addDefaultValue(areaCode);
+            });
+         }
+      },
+
+      addDefaultValue(areaCode) {
+         // 添加默认选中
+         this.$nextTick(() => {
+            let cityCode = "";
+            // 获取默认选中值
+            if (!areaCode) {
+               if (this.urlSearch.citycode) {
+                  cityCode = this.urlSearch.citycode;
+               } else {
+                  let appVariablesList = window?.APP_SDK_DATA?.store?.appVariables;
+                  appVariablesList?.forEach((item) => {
+                     if (item.name == "citycode") {
+                        cityCode = item.default_value;
+                     }
+                  });
+                  console.log("<---复杂过滤组件-应用变量--->", this.cityValue);
+               }
+            } else {
+               cityCode = areaCode;
+            }
+
+            // // 默认选中
+            // this.city = cityCode;
+
+            // // 添加默认名称
+            // this.cityTitle =
+            //    this.cityList.filter((item) => {
+            //       return item.citycode == cityCode;
+            //    })[0]?.cityname || "城市";
+
+            // 遍历树形数据
+            this.queryCityDataValue(cityCode, this.cityList);
+         });
+      },
+
+      // 匹配城市数据
+      queryCityDataValue(id, list) {
+         for (let i = 0; i < list.length; i++) {
+            if (id == list[i].citycode) {
+               this.cityTitle = list[i].cityname || "城市";
+               this.city = list[i].citycode;
+               return;
+            }
+            if (list[i].children && list[i].children.length) {
+               this.queryCityDataValue(id, list[i].children);
+            }
+         }
+      },
+
+      // 获取类型数据
+      getTypeData() {
+         let dataForm = {
+            queryCondition: {
+               queryColumns: ["type_name", "data_id"],
+               queryParams: [],
+               orderBy: "type_name",
+               orderSort: "DESC",
+            },
+         };
+         queryTypeData(dataForm).then((res) => {
+            let dataList = [];
+            res.data.results.forEach((item) => {
+               dataList[item.sort] = {
                   text: item.type_name,
                   value: item.data_id,
-               });
+               };
             });
+            dataList.unshift({ text: "无", value: "clear" });
 
-            let sessionType = window.sessionStorage.getItem("dropTypevalue");
-            if (sessionType) {
-               let _type = this.typeList.filter((item) => {
-                  return item.value == sessionType;
-               });
+            this.typeList = dataList.filter(Boolean);
 
-               this.type = _type[0].value;
-               this.typeTitle = _type[0].text;
+            console.log("dataList", this.typeList);
+
+            if (this.urlSearch.typevalue) {
+               this.type = this.urlSearch.typevalue;
+               this.typeTitle =
+                  this.typeList.filter((item) => {
+                     return item.value == this.urlSearch.typevalue;
+                  })[0]?.text || "类型";
             }
-
          });
-         // 请求城市数据
-         queryAreaByApi().then((res) => {
-            res.data.result.forEach((item, index) => {
-               if (index > 0) {
-                  this.cityList.push({
-                     text: item.cityname,
-                     value: item.citycode,
-                  });
-               }
-            });
-
-            let sessionCity = window.sessionStorage.getItem("dropCitycode");
-            if (sessionCity) {
-               let _city = this.cityList.filter((item) => {
-                  return item.value == sessionCity;
-               });
-
-               this.city = _city[0].value;
-               this.cityTitle = _city[0].text;
-            }
-
-            this.getJSSDK();
-         });
-
-         // 获取sessios中时间数据
-         let sessionTime = window.sessionStorage.getItem("dropTime");
-         if (sessionTime) {
-            let _time = this.dateList.filter((item) => {
-               return item.value == sessionTime;
-            });
-
-            this.date = _time[0].value;
-            this.dateTitle = _time[0].text;
-         }
       },
 
       // 切换城市
       changeCityDropDown(value) {
-         this.cityTitle = this.filterData(this.cityList, value);
-         this.triggerEvent("dropCitycode", { citycode: value });
-
-         window.sessionStorage.setItem("dropCitycode", value);
+         this.cityTitle = value.selectedOptions[value.selectedOptions.length - 1].cityname;
+         this.triggerEvent("dropCitycode", { citycode: value.value });
       },
       // 切换类型
       changeTypeDropDown(value) {
-         this.typeTitle = this.filterData(this.typeList, value);
-         this.triggerEvent("dropTypevalue", { typevalue: value });
-
-         window.sessionStorage.setItem("dropTypevalue", value);
+         if (value.value == "clear") {
+            this.type = "";
+            this.typeTitle = "类型";
+            this.triggerEvent("dropTypevalue", { typevalue: null });
+            this.changeAppVariables(null, "citytype2");
+            console.log("修改应用变量(citytype2)：", null);
+            return;
+         }
+         this.typeTitle = this.typeList.filter((item) => {
+            return item.value == value.value;
+         })[0]?.text;
+         this.triggerEvent("dropTypevalue", { typevalue: value.value });
       },
       // 切换日期
       changeDateDropDown(value) {
-         this.dateTitle = this.filterData(this.dateList, value);
-         
-         let timeValue = {
-            starttime: "",
-            endtime: "",
-         };
+         if (value.value == "clear") {
+            this.date = "";
+            this.dateTitle = "时间";
+            this.triggerEvent("dropTime", { starttime: null, endtime: null });
+            this.changeAppVariables(null, "starttime2");
+            this.changeAppVariables(null, "endtime2");
+            console.log("修改应用变量(starttime2)：", null);
+            console.log("修改应用变量(endtime2)：", null);
+            return;
+         }
+
+         this.dateTitle = this.dateList.filter((item) => {
+            return item.value == value.value;
+         })[0].text;
+
+         let timeValue = { starttime: "", endtime: "" };
 
          if (this.dateTitle == "近一个月") {
             timeValue.starttime = this.getDateTime(1).starttime;
@@ -173,49 +361,7 @@ export default {
             timeValue.endtime = this.getDateTime(6).endtime;
          }
 
-         window.sessionStorage.setItem("dropTime", value);
-
          this.triggerEvent("dropTime", { starttime: timeValue.starttime, endtime: timeValue.endtime });
-      },
-
-      // 获取定位
-      async getJSSDK() {
-         let url = encodeURIComponent(window.location.href.split("#")[0]);
-         let { data: res } = await jsSdkConfig(url);
-         window.wx.config({
-            debug: false, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
-            appId: res.appId, // 必填，公众号的唯一标识
-            timestamp: res.timestamp, // 必填，生成签名的时间戳
-            nonceStr: res.nonceStr, // 必填，生成签名的随机串
-            signature: res.signature, // 必填，签名
-            jsApiList: ["getLocation"], // 必填，需要使用的 JS 接口列表
-         });
-         window.wx.ready(() => {
-            window.wx.getLocation({
-               type: "gcj02",
-               success: (resp) => {
-                  this.setDefaultCity(resp);
-               },
-               fail(error) {},
-            });
-         });
-      },
-
-      // 获取默认城市编码
-      setDefaultCity(res) {
-         let loglat = `${res.latitude},${res.longitude}`;
-
-         queryAddress(loglat).then((res) => {
-            let cityName = res.data.ad_info.city;
-
-            let cityArr = this.cityList.filter((item) => {
-               return item.text == cityName;
-            });
-
-            window.sessionStorage.setItem("dropCitycode", cityArr[0].value);
-            this.city = cityArr[0].value;
-            this.cityTitle = cityArr[0].text;
-         });
       },
 
       // 获取日期时间
@@ -256,12 +402,12 @@ export default {
          };
       },
 
-      // 过滤数据
-      filterData(dataList, value) {
-         let row = dataList.filter((item) => {
-            return item.value == value;
-         });
-         return row[0].text;
+      // 展开下拉菜单
+      openDropMenu(menuType) {
+         // 改变弹出层类型
+         this.cascaderType = menuType;
+         // 打开弹出层
+         this.popupIsShow = true;
       },
 
       // 逻辑控制事件方法

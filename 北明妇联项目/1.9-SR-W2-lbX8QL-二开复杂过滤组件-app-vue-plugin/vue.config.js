@@ -1,13 +1,14 @@
 const path = require("path");
 module.exports = {
    configureWebpack: {
-      devtool: "source-map",
+      devtool: "eval-source-map",
    },
    devServer: {
       disableHostCheck: true,
       proxy: {
          "/api": {
-            target: "https://beiming.sdata1010.cn/",
+            // target: "https://beiming.sdata1010.cn/",
+            target: "http://10.15.110.25:18880/",
             changeOrigin: true,
             pathRewrite: {
                "/api": "",
