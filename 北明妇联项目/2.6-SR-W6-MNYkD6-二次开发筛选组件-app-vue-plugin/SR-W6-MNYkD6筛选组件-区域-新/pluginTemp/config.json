@@ -1,0 +1,20 @@
+{
+  "id": "44210ac9-6465-41e7-96c3-b0d7e67a5e0b",
+  "type": "app",
+  "main": "app.e11a9093.js",
+  "version": "2",
+  "props": {
+    "type": "customize",
+    "img": "APP_0001.png",
+    "name": "应用二开_vue",
+    "loadStyle": 0,
+    "lib": [],
+    "css_script": [],
+    "customconf": [
+      "id"
+    ]
+  },
+  "configuration": true,
+  "requirement-number": "SR-W6-MNYkD6",
+  "requirement-name": "筛选组件-区域-新"
+}

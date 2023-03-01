@@ -1,0 +1,81 @@
+// 最外层
+.outermest_publicity {
+   height: 100%;
+   position: relative;
+   background: url("../../assets/背景图.png") no-repeat;
+   background-size: 100% 100%;
+   overflow: hidden;
+   margin: 0 10px 10px 10px;
+   // 公示栏
+   .formula {
+      width: 100%;
+      // 盒子布局
+      .formula_box {
+         padding: 12px 0 0 18px;
+         height: 70px;
+         font-size: 18px;
+         box-sizing: border-box;
+         // 文本
+         .text {
+            margin-bottom: 5px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: bolder;
+            color: #333333;
+         }
+         // 数字
+         .number {
+            color: #e04f72;
+         }
+         // 日期
+         .date {
+            font-size: 12px;
+            color: #999999;
+         }
+      }
+      // 区域选择
+      .area_select {
+         position: absolute;
+         margin-top: 20px;
+         right: 7%;
+         text-align: right;
+      }
+
+      // 按钮
+      .el-button {
+         min-width: 100px;
+         padding: 9px 25px 6px 25px;
+         border-radius: 20px;
+         font-size: 16px;
+         color: #3296fa;
+         border-color: #3296fa;
+         text-align: center;
+         background: transparent;
+         position: relative;
+         span {
+            // display: flex;
+            display: block;
+            margin-left: -20px;
+         }
+      }
+
+      // 倒三角
+      .triangle {
+         width: 0px;
+         height: 0px;
+         border: 7px solid transparent;
+         border-top-color: #3296fa;
+         border-radius: 4px;
+         position: absolute;
+         right: 8px;
+         top: 13px;
+      }
+   }
+
+   //
+}
+
+.cascader_option {
+   .el-cascader-menu {
+      min-width: 120px;
+   }
+}
