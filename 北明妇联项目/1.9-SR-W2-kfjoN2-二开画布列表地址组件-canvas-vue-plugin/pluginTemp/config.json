@@ -1,7 +1,7 @@
 {
   "id": "de495b6e-a2b5-4103-8bf2-0cea6e378b97",
   "type": "canvas",
-  "main": "app.f0c7873e.js",
+  "main": "app.8ef85447.js",
   "version": "2",
   "props": {
     "img": "APP_0001.png",
@@ -15,5 +15,5 @@
     "assetColumnList": "[{\"col_name\":\"自定义\",\"col_datatype\":0}]"
   },
   "requirement-number": "SR-W2-kfjoN2",
-  "requirement-name": "二开画布列表地址组件"
+  "requirement-name": "二开画布列表地址跳地图组件"
 }

@@ -1,7 +1,7 @@
 {
   "id": "7baeee90-5e3e-4642-9f57-5d527620bf2f",
   "type": "app",
-  "main": "app.abcdbe10.js",
+  "main": "app.93ff08f6.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -12,7 +12,8 @@
     "css_script": [],
     "customconf": [
       "id",
-      "弹出层顶部距离"
+      "弹出层顶部距离",
+      "是否二级"
     ]
   },
   "configuration": true,

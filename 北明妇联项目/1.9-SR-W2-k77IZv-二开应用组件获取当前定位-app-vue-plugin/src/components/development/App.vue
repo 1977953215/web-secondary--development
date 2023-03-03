@@ -3,21 +3,11 @@
     <el-carousel arrow="always" :autoplay="false">
       <el-carousel-item v-for="item in renderMap" :key="item">
         <div v-if="item == 'Main'">
-          <Main
-            :mainInit="mainInit"
-            :key="mainKey"
-            :customConfig="customConfig"
-          />
+          <Main :mainInit="mainInit" :key="mainKey" :customConfig="customConfig" />
         </div>
         <div v-else>
-          <Options
-            :options="customConfig"
-            :changeOptions="changeCustomConfig"
-          />
-          <DesignConfiguration
-            :customConfig="customConfig"
-            :changeCustomConfig="changeCustomConfig"
-          />
+          <Options :options="customConfig" :changeOptions="changeCustomConfig" />
+          <DesignConfiguration :customConfig="customConfig" :changeCustomConfig="changeCustomConfig" />
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -25,45 +15,32 @@
 </template>
 
 <script>
-import {
-  Carousel,
-  CarouselItem
-} from "element-ui";
-import Vue from "vue";
-import {
-  Main,
-  DesignConfiguration
-} from "@/components";
+// import { Carousel, CarouselItem } from "element-ui";
+// import Vue from "vue";
+import { Main, DesignConfiguration } from "@/components";
 import Options from "./Options.vue";
-import {
-  mockCustomConfig,
-  mockChangeCustomConfig
-} from "./mockData.js";
+import { mockCustomConfig, mockChangeCustomConfig } from "./mockData.js";
 import Utils from "@/utils";
 
-Vue.use(Carousel);
-Vue.use(CarouselItem);
+// Vue.use(Carousel);
+// Vue.use(CarouselItem);
 export default {
   name: "Development",
   components: {
     Main,
     Options,
-    DesignConfiguration
+    DesignConfiguration,
   },
   data() {
     return {
-      renderMap: [
-        "Main",
-        "DesignConfiguration"
-      ],
+      renderMap: ["Main", "DesignConfiguration"],
       mainKey: "",
-      customConfig: mockCustomConfig
+      customConfig: mockCustomConfig,
     };
   },
-  created() {
-  },
+  created() {},
   props: {
-    mainInit: Function
+    mainInit: Function,
   },
   mounted() {
     this.mainInit(this);
@@ -73,8 +50,8 @@ export default {
       this.customConfig = customConfig;
       this.mainKey = Utils.generateUUID();
       mockChangeCustomConfig(customConfig);
-    }
-  }
+    },
+  },
 };
 </script>
 

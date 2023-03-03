@@ -62,18 +62,6 @@ module.exports = {
       .tap(options => Object.assign(options, { limit: 10 * 100 * 1024 * 1024 }));
 
   },
-  // css: {
-  //   loaderOptions: {
-  //     postcss: {
-  //       plugins: [
-  //         require('postcss-pxtorem')({
-  //           rootValue: 37.5,
-  //           propList: ['*']
-  //         })
-  //       ]
-  //     }
-  //   }
-  // }
 };
 
 function resolve(dir) {

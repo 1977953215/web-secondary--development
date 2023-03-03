@@ -17,6 +17,7 @@ export default {
     record: Object,
     value: String,
     mainInit: Function,
+    allComponentList: Array,
   },
   computed: {},
   data() {
@@ -27,6 +28,26 @@ export default {
     };
   },
   async mounted() {
+    let lat = "";
+    let long = "";
+    this.allComponentList.forEach((item, index) => {
+      if (item.title == "latitude") {
+        for (const k in this.record) {
+          if (k == item.id) {
+            lat = this.record[k];
+          }
+        }
+      }
+      if (item.title == "longitude") {
+        for (const k in this.record) {
+          if (k == item.id) {
+            long = this.record[k];
+          }
+        }
+      }
+    });
+    this.valuePosition = lat + "," + long;
+    console.log(this.valuePosition,49);
     await this.getJSSDK();
     //此方法封装了事件注册，不可删除
     this.mainInit(this);
@@ -87,7 +108,7 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" :scoped="true">
 .imgTitle {
   font-size: 14px;
 }

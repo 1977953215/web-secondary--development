@@ -1,0 +1,19 @@
+{
+  "id": "de495b6e-a2b5-4103-8bf2-0cea6e378b37",
+  "type": "canvas",
+  "main": "app.5b3b2207.js",
+  "version": "2",
+  "props": {
+    "img": "APP_0001.png",
+    "name": "应用二开_vue",
+    "loadStyle": 0,
+    "lib": [],
+    "css_script": [],
+    "styleArr": "[\"title\",\"key\", \"eventCenterConfig\"]",
+    "columnStyle": "{title:'自定义'}",
+    "componentAttributes": "{\"style\":[\"title\"],\"data\":[\"key\"],\"interaction\":[\"eventCenterConfig\"]}",
+    "assetColumnList": "[{\"col_name\":\"自定义\",\"col_datatype\":0}]"
+  },
+  "requirement-number": "SR-W8-DlqKxT",
+  "requirement-name": "二开列表页距离组件"
+}

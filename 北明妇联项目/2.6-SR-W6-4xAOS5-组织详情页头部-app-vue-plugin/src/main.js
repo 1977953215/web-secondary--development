@@ -80,13 +80,14 @@ const mainInit = (Main) => {
 // }
 
 if (process.env.NODE_ENV !== "production") {
-  new Vue({
-    render: h => <Development mainInit={mainInit} />
-  }).$mount("#app");
+  // new Vue({
+  //   render: h => <Development mainInit={mainInit} />
+  // }).$mount("#app");
 } else {
   if (!window.CUSTOM_PLUGIN) {
     window.CUSTOM_PLUGIN = new Map();
   }
+  console.log(!window.VueRef, window.VueRef, window.CUSTOM_PLUGIN.set, '-------88');
   window.CUSTOM_PLUGIN.set(
     process.env.VUE_APP_CUSTOM_PLUGIN_ID,
     (dom, props, context, eventBus) => {

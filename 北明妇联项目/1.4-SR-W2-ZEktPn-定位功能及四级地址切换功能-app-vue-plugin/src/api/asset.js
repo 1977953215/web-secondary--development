@@ -8,4 +8,5 @@ import request from "./request";
 export const requeryAddressByCoordinate = (params) => request.get(`/ext/locating/queryAddressByCoordinate?coordinate=${params.coordinate}`);
 export const queryAddressByCoordinate = (params) => request.get(`/ext/locating/queryCoordinateByAddress?address=${params.address}`);
 export const jsSdkConfig = (params) => request.get(`/ext/js-sdk?url=${params.url}`);
-export const catalog = (params) => request.post(`/service/dataapi/rest/e2159396-d7c3-4115-95ab-3fdefa85c5be`,{});
+// 获取城市数据接口
+export const catalog = (dataForm) => request.post(`/ext/queryAsset/queryByAssetId?assetId=ab367a9e-de90-44de-9f7c-4c835941c886`, dataForm);

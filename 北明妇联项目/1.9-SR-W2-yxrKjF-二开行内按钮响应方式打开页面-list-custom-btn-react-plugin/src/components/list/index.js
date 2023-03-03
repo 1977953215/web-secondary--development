@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Modal, Button } from "antd";
-
+// import { Row, Col, Modal, Button } from "antd";
 import "./index.less";
+const React = window.React;
+const { useEffect, useState  } = React
+const { Row, Col, Modal, Button } = window.antd;
 
 const List = ({ dataSource, customParams, dataId, deleteData }) => {
   let { column, keyName, goURL } = customParams;

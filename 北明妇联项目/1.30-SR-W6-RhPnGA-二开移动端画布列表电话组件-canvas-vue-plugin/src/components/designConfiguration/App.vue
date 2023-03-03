@@ -9,12 +9,6 @@
 </template>
 
 <script>
-import { Form, FormItem, Input } from "element-ui";
-import Vue from "vue";
-
-Vue.use(FormItem);
-Vue.use(Form);
-Vue.use(Input);
 export default {
   name: "DesignConfiguration",
   components: {},

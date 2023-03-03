@@ -4,7 +4,7 @@
     ref="app-secondary"
     class="app-secondary"
     style="display: flex; justify-content: space-between; height: 100%"
-    :style="{ width: this.customConfig.组件宽||'100%', height: this.customConfig.组件高||'100%' }"
+    :style="{ width: this.customConfig.组件宽 || '100%', height: this.customConfig.组件高 || '100%' }"
   >
     <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"> </el-input> -->
     <div class="treeLeft">
@@ -21,7 +21,7 @@
         :default-expanded-keys="['32']"
         style="height: 94%; overflow-y: auto"
       >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span class="custom-tree-node" slot-scope="{ node, data }" v-if="data.type == 'area'">
           <svg
             v-show="!node.expanded && data.leval == 3"
             t="1676345380838"
@@ -179,7 +179,12 @@ export default {
   mounted() {
     queryAssetById(this.customConfig.树资产ID, 99999).then((res) => {
       this.nodeAllData = Utils.translatePlatformDataToJsonArray(res);
-      this.leftTreedata = this.changeTree(Utils.translatePlatformDataToJsonArray(res), 0);
+      this.leftTreedata = this.changeTree(
+        Utils.translatePlatformDataToJsonArray(res).filter((item) => {
+          return item.type == "area";
+        }),
+        0
+      );
       console.log(this.rightTreedata);
     });
     //此方法封装了事件注册，不可删除
@@ -250,12 +255,9 @@ export default {
      * @example triggerEvent("click",{value:"123"})
      *
      */
-    triggerEvent(name, data) {
+    triggerEvent(eventName, payload) {
       let { componentId, appId } = this.customConfig || {};
-      window.eventCenter?.triggerEvent &&
-        window.eventCenter.triggerEvent(componentId, name, {
-          value: data,
-        });
+      componentId && appId && window.eventCenter?.triggerEvent(componentId, eventName, { value: payload.citycode });
     },
     //必需，不可删除
     Event_Center_getName() {
@@ -306,7 +308,7 @@ export default {
     color: #4e8591;
   }
 }
-/deep/.el-tree__empty-text{
+/deep/.el-tree__empty-text {
   display: none;
 }
 </style>

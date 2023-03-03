@@ -16,6 +16,13 @@ module.exports = {
       }
     }
   },
+  productionSourceMap: false,
+  configureWebpack: {
+    externals: {
+      vue: "Vue",
+      "element-ui": "ELEMENT",
+    }
+  },
   chainWebpack: (config) => {
     config.when(process.env.NODE_ENV === "production", (config) => {
       config.optimization.splitChunks(false);

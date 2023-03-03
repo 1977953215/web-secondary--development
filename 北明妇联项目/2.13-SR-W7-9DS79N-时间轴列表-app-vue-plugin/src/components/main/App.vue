@@ -32,15 +32,16 @@
 </template>
 
 <script>
-import Vue from "vue"
+// import Vue from "vue"
+const Vue = window.Vue
 import { TimelineItem, Timeline } from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import { queryAssetById, userQuery, queryTimeline } from "../../api/asset";
 import { translatePlatformDataToJsonArray } from '../../utils/handleData'
 import moment from "moment";
-Vue.prototype.moment = moment
-Vue.component('Timeline', Timeline);
-Vue.component('TimelineItem', TimelineItem);
+// Vue.prototype.moment = moment
+window?.Vue?.component('Timeline', Timeline);
+window?.Vue?.component('TimelineItem', TimelineItem);
 const mockData = [
   { creat_time: '2022-03-22', picture: '[{"uid":"rc-upload-1676013318689-3","name":"a86afaa4-1fce-4bac-b8ce-b948e2e475b8.png","url":"/storage_area/form/1234567890/45ee97adfa884a329a3d86a0d61c528a.png"}]', title: 'hdvjhasgdhasdgg' },
   { creat_time: '2021-02-22', picture: '[{"uid":"rc-upload-1676013318689-3","name":"a86afaa4-1fce-4bac-b8ce-b948e2e475b8.png","url":"/storage_area/form/1234567890/45ee97adfa884a329a3d86a0d61c528a.png"}]', title: 'hdvjhasgdhasdgg' },
@@ -137,7 +138,14 @@ export default {
           item.month = month[moment(item.creat_time).format('M') - 1]
           item.day = moment(item.creat_time).format('DD')
           item.title = item.activity_details
-          item.publish_image = JSON.parse(item.picture || "[]")?.[0]?.url
+          let imgUrl = JSON.parse(item.picture || '[]')[0]?.url
+          if (imgUrl?.includes('http')) {
+            item.publish_image = imgUrl
+          } else {
+
+            item.publish_image = window?.configuration?.system_resource_access_prefix ? window?.configuration?.system_resource_access_prefix + imgUrl : imgUrl
+          }
+          // item.publish_image = JSON.parse(item.picture || "[]")?.[0]?.url
         })
 
       })

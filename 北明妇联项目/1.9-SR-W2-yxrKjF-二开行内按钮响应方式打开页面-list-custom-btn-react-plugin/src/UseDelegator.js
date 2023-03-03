@@ -1,5 +1,5 @@
-import { useRef, useEffect } from "react";
-
+const React = window.React;
+const {  useRef, useEffect   } = React
 function useDelegator(
   id,
   actions,

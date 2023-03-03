@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Form, Input } from "antd";
-
+const React = window.React;
+const { useEffect } = React;
+const { Form, Input } = window.antd;
 const DesignConfiguration = ({ changeConfiguration, configuration }) => {
   const [form] = Form.useForm();
   useEffect(() => {

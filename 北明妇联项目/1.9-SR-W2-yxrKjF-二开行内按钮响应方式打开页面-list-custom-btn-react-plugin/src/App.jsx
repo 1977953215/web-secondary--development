@@ -1,9 +1,8 @@
-import React, {useState} from "react";
 import PropTypes from "prop-types";
-
 import List from "./components/list";
 import DesignConfiguration from "./components/designConfiguration";
-
+const React =window.React
+const {  useState}  =React
 const renderHashMap = {
   list: List,
   designConfiguration: DesignConfiguration,

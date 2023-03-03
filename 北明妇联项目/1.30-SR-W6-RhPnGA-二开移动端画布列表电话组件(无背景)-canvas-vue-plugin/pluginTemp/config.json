@@ -1,0 +1,19 @@
+{
+  "id": "de495b6e-a2b5-4103-8bf2-0cea6e378b80",
+  "type": "canvas",
+  "main": "app.d636f127.js",
+  "version": "2",
+  "props": {
+    "img": "APP_0001.png",
+    "name": "应用二开_vue",
+    "loadStyle": 0,
+    "lib": [],
+    "css_script": [],
+    "styleArr": "[\"title\",\"key\", \"eventCenterConfig\"]",
+    "columnStyle": "{title:'自定义'}",
+    "componentAttributes": "{\"style\":[\"title\"],\"data\":[\"key\"],\"interaction\":[\"eventCenterConfig\"]}",
+    "assetColumnList": "[{\"col_name\":\"自定义\",\"col_datatype\":0}]"
+  },
+  "requirement-number": "SR-W6-RhPnGA",
+  "requirement-name": "二开移动端画布列表电话无背景组件"
+}

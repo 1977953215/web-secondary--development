@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import {
-  Carousel,
-  CarouselItem
-} from "element-ui";
-import Vue from "vue";
+// import {
+//   Carousel,
+//   CarouselItem
+// } from "element-ui";
+// import Vue from "vue";
 import {
   Main,
   DesignConfiguration
@@ -36,8 +36,8 @@ import {
 } from "./mockData.js";
 import Utils from "@/utils";
 
-Vue.use(Carousel);
-Vue.use(CarouselItem);
+// Vue.use(Carousel);
+// Vue.use(CarouselItem);
 export default {
   name: "Development",
   components: {

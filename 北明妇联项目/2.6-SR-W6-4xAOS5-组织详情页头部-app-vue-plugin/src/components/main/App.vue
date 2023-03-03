@@ -163,7 +163,7 @@ export default {
     },
     //分享事件
     handleShare() {
-      let loadingInstance1 = window.ELEMENT?.Loading.service({ fullscreen: true, background: 'rgba(0,0,0,.2)', text: '生成海报中' });
+      let loadingInstance1 = window?.ELEMENT?.Loading.service({ fullscreen: true, background: 'rgba(0,0,0,.2)', text: '生成海报中' });
       if (this.user_id) {
         if (this.$refs?.imgSrc?.src) {
           loadingInstance1.close();
@@ -209,7 +209,7 @@ export default {
           if (imgUrl.includes('http')) {
             this.organizeData.organize_cover_art = imgUrl
           } else {
-            this.organizeData.organize_cover_art = window?.configuration?.system_resource_access_prefix + imgUrl
+            this.organizeData.organize_cover_art = window?.configuration?.system_resource_access_prefix ? window?.configuration?.system_resource_access_prefix + imgUrl : imgUrl
           }
           // this.organizeData.organize_cover_art = JSON.parse(this.organizeData.organize_cover_art || '[]')[0]?.url
           this.dynamic = []
@@ -229,7 +229,13 @@ export default {
           // console.log(res, '======ewn');
           this.organizeData = res.data[0]
           this.isFollow = Boolean(Number(this.organizeData.attent_status))
-          this.organizeData.organize_cover_art = JSON.parse(this.organizeData.organize_cover_art || '[]')[0]?.url
+          let imgUrl = JSON.parse(this.organizeData.organize_cover_art || '[]')[0]?.url
+          if (imgUrl.includes('http')) {
+            this.organizeData.organize_cover_art = imgUrl
+          } else {
+            this.organizeData.organize_cover_art = window?.configuration?.system_resource_access_prefix ? window?.configuration?.system_resource_access_prefix + imgUrl : imgUrl
+          }
+          // this.organizeData.organize_cover_art = JSON.parse(this.organizeData.organize_cover_art || '[]')[0]?.url
           this.dynamic = []
           valueArr.forEach(x => {
             this.organizeData[x] = this.handleISOver(this.organizeData[x])

@@ -48,6 +48,7 @@ export default {
     record: Object,
     value: String,
     mainInit: Function,
+    allComponentList: Array,
   },
   computed: {},
   data() {
@@ -71,7 +72,26 @@ export default {
         window.clearInterval("timer");
       }
     }, 0);
-    this.valuePosition = this.value;
+    let lat = "";
+    let long = "";
+    this.allComponentList.forEach((item, index) => {
+      if (item.title == "latitude") {
+        for (const k in this.record) {
+          if (k == item.id) {
+            lat = this.record[k];
+          }
+        }
+      }
+      if (item.title == "longitude") {
+        for (const k in this.record) {
+          if (k == item.id) {
+            long = this.record[k];
+          }
+        }
+      }
+    });
+    this.valuePosition = lat + "," + long;
+    console.log(this.valuePosition,94);
     await this.getJSSDK();
     //此方法封装了事件注册，不可删除
     this.mainInit(this);
@@ -115,9 +135,7 @@ export default {
               this.showFlag = true;
               this.$forceUpdate();
             },
-            fail(error) {
-              this.getJSSDK();
-            },
+            fail: (error) => {},
           });
         });
         window.wx.error((res) => {});
@@ -192,7 +210,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.canvas-secondary-erkai{
+.canvas-secondary-erkai {
   background-color: transparent !important;
 }
 </style>

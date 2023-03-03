@@ -15,22 +15,24 @@
 </template>
 
 <script>
-import { Carousel, CarouselItem, Button, Icon, } from "element-ui";
-import { Popup, Dialog,Tab,Tabs } from "vant";
-import Vue from "vue";
+// import { Carousel, CarouselItem, Button, Icon } from "element-ui";
+// import { Popup, Dialog, Tab, Tabs } from "vant";
+// import Vue from "vue";
 import { Main, DesignConfiguration } from "@/components";
 import Options from "./Options.vue";
 import { mockCustomConfig, mockChangeCustomConfig } from "./mockData.js";
 import Utils from "@/utils";
-
-Vue.use(Carousel);
-Vue.use(CarouselItem);
-Vue.use(Button);
-Vue.use(Icon);
-Vue.use(Popup);
-Vue.use(Tab);
-Vue.use(Tabs);
-Vue.use(Dialog);
+// const { Carousel, CarouselItem, Button, Icon } = window.ELEMENT;
+// const Vue = window.Vue;
+// const { Popup, Dialog, Tab, Tabs } = window.vant;
+// Vue.use(Carousel);
+// Vue.use(CarouselItem);
+// Vue.use(Button);
+// Vue.use(Icon);
+// Vue.use(Popup);
+// Vue.use(Tab);
+// Vue.use(Tabs);
+// Vue.use(Dialog);
 export default {
   name: "Development",
   components: {

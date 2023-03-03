@@ -7,7 +7,7 @@ export const events = [
       {
         name: "值",
         key: "value",
-        dataType: "object"
+        dataType: "string"
       }
     ]
   }

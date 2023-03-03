@@ -1,6 +1,7 @@
 
-  import React from 'react';
-
+  // import React from 'react';
+  const React =window.React
+useState
   export interface FormAttribute {
     componentId: string;
     data?: any;

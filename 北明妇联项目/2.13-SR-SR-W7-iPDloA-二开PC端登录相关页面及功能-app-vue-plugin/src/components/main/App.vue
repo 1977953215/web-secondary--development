@@ -173,11 +173,17 @@ export default {
   methods: {
     goSystem(type) {
       if (type == "left") {
-        window.location.href =
-          window.location.origin + "/applicationview/content/view?appid=e8e552c8-41bc-2f7b-bb69-d73a47810fe8&type=view&menuId=2357c3fe-ef64-59cc-0f47-92e83ec87926%233";
+        if (window.configuration?.leftGoUrl) {
+          window.location.href = window.location.origin + window.configuration.leftGoUrl;
+        }
+        // window.location.href =
+        //   window.location.origin + "/applicationview/content/view?appid=e8e552c8-41bc-2f7b-bb69-d73a47810fe8&type=view&menuId=2357c3fe-ef64-59cc-0f47-92e83ec87926%233";
       } else {
-        window.location.href =
-          window.location.origin + "/applicationview/content/view?appid=e913a367-d40f-cd9d-d5ae-a07a210fdbf5&type=view&menuId=47c7b577-fa42-68da-9370-8b46e3d462cc%233";
+        if (window.configuration?.rightGoUrl) {
+          window.location.href = window.location.origin + window.configuration.rightGoUrl;
+        }
+        // window.location.href =
+        //   window.location.origin + "/applicationview/content/view?appid=e913a367-d40f-cd9d-d5ae-a07a210fdbf5&type=view&menuId=47c7b577-fa42-68da-9370-8b46e3d462cc%233";
       }
     },
     logChecked() {
@@ -427,6 +433,7 @@ export default {
       left: 450px;
       top: 246px;
       padding: 23px 22px;
+      overflow-y: scroll;
       ul {
         padding: 0 !important;
       }

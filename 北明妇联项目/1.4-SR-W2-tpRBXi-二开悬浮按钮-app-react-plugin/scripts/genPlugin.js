@@ -39,11 +39,11 @@ Date.prototype.Format = function(fmt) {
   return fmt;
 };
 // 删除老的文件
-glob.sync(path.resolve(__dirname, "../pluginTemp/js/*")).map((file) => {
+glob.globSync(path.resolve(__dirname, "../pluginTemp/js/*")).map((file) => {
   console.log("file:", file);
   fs.removeSync(file);
 });
-glob.sync(path.resolve(__dirname, "../pluginTemp/media/*")).map((file) => {
+glob.globSync(path.resolve(__dirname, "../pluginTemp/media/*")).map((file) => {
   console.log("file:", file);
   fs.removeSync(file);
 });
@@ -52,7 +52,7 @@ console.log("老文件已删除");
 // copy js
 
 let mainFileName = ""; // 主入口文件
-glob.sync(path.resolve(__dirname, "../build/static/js/*")).map((file) => {
+glob.globSync(path.resolve(__dirname, "../build/static/js/*")).map((file) => {
   let fileName = path.basename(file);
   if (path.extname(file) === ".js") {
     if (fileName.indexOf("main") > -1) {
@@ -70,7 +70,7 @@ glob.sync(path.resolve(__dirname, "../build/static/js/*")).map((file) => {
 });
 
 // copy 静态文件
-glob.sync(path.resolve(__dirname, "../build/static/media/*")).map((file) => {
+glob.globSync(path.resolve(__dirname, "../build/static/media/*")).map((file) => {
   let fileName = path.basename(file);
   fs.copySync(file, path.resolve(__dirname, `../pluginTemp/media/${fileName}`));
 });

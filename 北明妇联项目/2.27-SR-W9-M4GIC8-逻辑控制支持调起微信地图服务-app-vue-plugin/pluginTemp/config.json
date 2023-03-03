@@ -1,0 +1,21 @@
+{
+  "id": "5498a32f-f86b-4794-882b-285d65041b02",
+  "type": "app",
+  "main": "app.08fd4b5f.js",
+  "version": "2",
+  "configuration": true,
+  "props": {
+    "type": "customize",
+    "img": "APP_0001.png",
+    "name": "应用二开_vue",
+    "loadStyle": 0,
+    "lib": [],
+    "css_script": [],
+    "customconf": [
+      "id"
+    ]
+  },
+  "requirement-number": "SR-W9-M4GIC8",
+  "requirement-name": "逻辑控制支持调起微信地图服务",
+  "suggestedFolderName": "2.27-SR-W9-M4GIC8-逻辑控制支持调起微信地图服务-app-react-plugin"
+}

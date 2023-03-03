@@ -21,6 +21,7 @@ const Utils = {
     });
     return tableData;
   },
+  
   /**
    * 自定义定时器，将在执行指定次数之后结束
    * @param {Number} time 定时器执行的时间间隔，单位ms

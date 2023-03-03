@@ -43,7 +43,7 @@
                   <div class="swiper-slide">
                      <div class="menu_left">
                         <div class="menu_box" v-for="(item, index) in menuLeftList" :key="index" @click="routerLink(item)">
-                           <img :src="item.picture.url" alt="" />
+                           <img :src="window?.configuration?.system_resource_access_prefix +  item.picture.url" alt="" />
                            <div>{{ item.title }}</div>
                         </div>
                      </div>
@@ -52,7 +52,7 @@
                   <div class="swiper-slide">
                      <div class="menu_left">
                         <div class="menu_box" v-for="(item, index) in menuRightList" :key="index" @click="routerLink(item)">
-                           <img :src="item.picture.url" alt="" />
+                           <img :src="window?.configuration?.system_resource_access_prefix + item.picture.url" alt="" />
                            <div>{{ item.title }}</div>
                         </div>
                      </div>
@@ -67,7 +67,7 @@
                <van-cell-group>
                   <van-cell v-for="(item, index) in userAccountList" :key="index" :title="intlGetKey(item.userName)" clickable @click="userAccount = item.id">
                      <template #icon>
-                        <img class="user_account" :src="item.photo" />
+                        <img class="user_account" :src="window?.configuration?.system_resource_access_prefix + item.photo" />
                      </template>
                      <template #right-icon>
                         <van-radio :name="item.id" @click="changeUser(item)" />

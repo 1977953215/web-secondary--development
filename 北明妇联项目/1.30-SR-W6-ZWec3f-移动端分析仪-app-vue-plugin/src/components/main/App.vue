@@ -86,15 +86,14 @@
             公示组织实时变更，组织信息维护可能存在延时，请在前往组织前拨打电话进行确认
           </div>
         </div>
-        <div class="footer_title_fu">如出现电话无法拨通的情况，建议前往组织官方平台咨询确认后在前往</div>
+        <div class="footer_title_fu">如出现电话无法拨通的情况，建议前往组织官方平台咨询确认后再前往</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { queryAssetById, queryOffecid, userQuery } from '../../api/asset'
-import Utils from '../../utils'
+import { queryOffecid, userQuery } from '../../api/asset'
 const sortArr = ["妇联组织",
   "妇女儿童之家",
   "婚姻家庭纠纷调解室",

@@ -1,8 +1,5 @@
 <script>
-import {
-  DesignConfiguration,
-  Main
-} from "./components";
+import { DesignConfiguration, Main } from "./components";
 
 export default {
   name: "App",
@@ -15,30 +12,28 @@ export default {
     componentId: String,
     record: Object,
     value: String,
-    mainInit: Function
+    mainInit: Function,
+    allComponentList: Array,
   },
   data() {
     return {};
   },
   computed: {},
   watch: {},
-  created() {
-  },
-  mounted() {
-  },
-  beforeDestroy() {
-  },
+  created() {},
+  mounted() {},
+  beforeDestroy() {},
   methods: {},
   render(h) {
     let props = this._props;
     if (this.type == "designConfiguration") {
       props.changeCustomConfig = props.changeConfiguration;
-      props.customConfig = JSON.parse(props.configuration)
+      props.customConfig = JSON.parse(props.configuration);
       return <DesignConfiguration {...{ props }} />;
     } else {
       props.customConfig = props.configuration;
       return <Main {...{ props }} />;
     }
-  }
+  },
 };
 </script>

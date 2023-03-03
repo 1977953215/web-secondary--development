@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="options" v-for="item in optionsRender" :key="item">
+    <!-- <div class="options" v-for="item in optionsRender" :key="item">
       <div class="options-item">
         <div :style='{ display: "inline-block", width: "200px" }'>{{ item }}</div>
         <el-input
@@ -8,36 +8,35 @@
         ></el-input>
       </div>
     </div>
-    <el-button class="optionsSubmit" @click=changeOptions(customOptions)>执行</el-button>
+    <el-button class="optionsSubmit" @click=changeOptions(customOptions)>执行</el-button> -->
   </div>
-
 </template>
 
 <script>
-import {
-  Button,
-  Input
-} from "element-ui";
-import Vue from "vue";
-import configJson from "../../../pluginTemp/config.json";
+// import {
+//   Button,
+//   Input
+// } from "element-ui";
+// import Vue from "vue";
+// import configJson from "../../../pluginTemp/config.json";
 
-Vue.use(Button);
-Vue.use(Input);
-export default {
-  name: "Options",
-  components: {},
-  data() {
-    return {
-      optionsRender: [],
-      customOptions: this.options
-    };
-  },
-  props: ["options", "changeOptions"],
-  mounted() {
-    this.optionsRender = configJson.props.customconf || [];
-  },
-  methods: {}
-};
+// Vue.use(Button);
+// Vue.use(Input);
+// export default {
+//   name: "Options",
+//   components: {},
+//   data() {
+//     return {
+//       optionsRender: [],
+//       customOptions: this.options
+//     };
+//   },
+//   props: ["options", "changeOptions"],
+//   mounted() {
+//     this.optionsRender = configJson.props.customconf || [];
+//   },
+//   methods: {}
+// };
 </script>
 
 <style scoped lang="less">

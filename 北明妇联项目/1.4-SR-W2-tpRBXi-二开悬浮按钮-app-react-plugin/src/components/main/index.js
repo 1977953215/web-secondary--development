@@ -55,7 +55,11 @@ export default class Main extends Component {
         id={this.state.id}
         onClick={() => { this.handleClick() }}
       >
-        <img src={img.img || dome} width='100%' height='100%' />
+        <img src={
+            (window?.configuration?.system_resource_access_prefix
+              ? window?.configuration?.system_resource_access_prefix
+              : "") + (img.img || dome)
+          } width='100%' height='100%' />
         {/* 以下为样例，正式开发请去除相关代码 */}
         {/* {this.state.number}
         <button onClick={this.handleClick}>测试逻辑控制</button> */}

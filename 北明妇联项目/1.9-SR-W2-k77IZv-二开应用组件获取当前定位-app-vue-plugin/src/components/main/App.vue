@@ -43,16 +43,16 @@ export default {
         url: encodeURIComponent(window.location.href.split("#")[0]),
       };
       let { data: res } = await jsSdkConfig(message);
+      window.sessionStorage.setItem("jssdkconifgData", JSON.stringify(res));
       window.wx.config({
         debug: false, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
         appId: res.appId, // 必填，公众号的唯一标识
         timestamp: res.timestamp, // 必填，生成签名的时间戳
         nonceStr: res.nonceStr, // 必填，生成签名的随机串
         signature: res.signature, // 必填，签名
-        jsApiList: ["getLocation"], // 必填，需要使用的 JS 接口列表
+        jsApiList: ["openLocation", "getLocation"], // 必填，需要使用的 JS 接口列表
       });
       window.wx.ready(() => {
-        console.log("ready");
         window.wx.getLocation({
           type: "gcj02",
           success: (resp) => {
@@ -64,13 +64,13 @@ export default {
               coordinate: `${latitude},${longitude}`,
             };
             requeryAddressByCoordinate(info).then((res) => {
-              alert(
-                JSON.stringify({
-                  citycode: res.data.address_reference.town.id,
-                  latitude,
-                  longitude,
-                })
-              );
+              // alert(
+              //   JSON.stringify({
+              //     citycode: res.data.address_reference.town.id,
+              //     latitude,
+              //     longitude,
+              //   })
+              // );
               this.triggerEvent("nowCitycodeChange", {
                 citycode: res.data.address_reference.town.id,
                 latitude,
@@ -78,9 +78,7 @@ export default {
               });
             });
           },
-          fail(error) {
-            consloe.log("用户拒绝获取位置信息");
-          },
+          fail(error) {},
         });
       });
     },
@@ -91,7 +89,6 @@ export default {
      *
      */
     triggerEvent(type, payload) {
-      console.log(type, payload);
       window.eventCenter?.triggerEvent &&
         window.eventCenter.triggerEvent(this.customConfig.componentId, type, {
           value: payload,

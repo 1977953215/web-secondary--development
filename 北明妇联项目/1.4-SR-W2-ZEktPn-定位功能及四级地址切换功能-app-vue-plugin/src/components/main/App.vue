@@ -18,17 +18,17 @@
             item.cityname
           }}</el-button>
         </van-tab>
-        <van-tab title="选择区" name="second">
+        <van-tab title="选择区" name="second" v-if="!this.customConfig.是否二级">
           <el-button class="chooseCity" round v-for="(item, index) in districtArray" :class="{ selectItem: item.select }" :key="index" size="small" @click="choseDistrict(item)">{{
             item.cityname
           }}</el-button>
         </van-tab>
-        <van-tab title="选择街道" name="third">
+        <van-tab title="选择街道" name="third" v-if="!this.customConfig.是否二级">
           <el-button class="chooseCity" round v-for="(item, index) in streetArray" :class="{ selectItem: item.select }" :key="index" size="small" @click="choseStreet(item)">{{
             item.cityname
           }}</el-button>
         </van-tab>
-        <van-tab title="选择社区" name="fourth"
+        <van-tab title="选择社区" name="fourth" v-if="!this.customConfig.是否二级"
           ><el-button
             class="chooseCity"
             round
@@ -62,10 +62,12 @@
 </template>
 <script>
 import { areaList } from "../../utils/area";
-import { Dialog } from "vant";
-import Vue from "vue";
+// import { Dialog } from "vant";
+// import Vue from "vue";
 import { queryAddressByCoordinate, requeryAddressByCoordinate, jsSdkConfig, catalog } from "../../api/asset";
-Vue.use(Dialog);
+// const Vue = window.Vue;
+// const { Dialog } = window.vant;
+// Vue.use(Dialog);
 export default {
   name: "Main",
   props: {
@@ -100,9 +102,10 @@ export default {
     };
   },
   async mounted() {
+    // this.customConfig.是否二级 = false;
     await this.getaddress();
     if (window.localStorage.getItem("positionInfo")) {
-      console.log(window.localStorage.getItem("positionInfo"));
+      console.log(window.localStorage.getItem("positionInfo"), "positionInfo");
       this.triggerEvent("positionChange", JSON.parse(window.localStorage.getItem("positionInfo")));
       this.provinceArray.forEach((provItem) => {
         if (provItem.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).province?.cityname) {
@@ -122,33 +125,35 @@ export default {
                   this.districtArray.push(element);
                 }
               });
-              this.districtArray.forEach((item2) => {
-                if (item2.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).district?.cityname) {
-                  item2.select = true;
-                  this.areaList.forEach((element) => {
-                    if (element.parentcode == item2.citycode) {
-                      element.select = false;
-                      this.streetArray.push(element);
-                    }
-                  });
-                  this.streetArray.forEach((item3) => {
-                    if (item3.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).street?.cityname) {
-                      item3.select = true;
-                      this.areaList.forEach((element) => {
-                        if (element.parentcode == item3.citycode) {
-                          element.select = false;
-                          this.communityArray.push(element);
-                        }
-                      });
-                      this.communityArray.forEach((item4) => {
-                        if (item4.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).community?.cityname) {
-                          item4.select = true;
-                        }
-                      });
-                    }
-                  });
-                }
-              });
+              if (!this.customConfig.是否二级) {
+                this.districtArray.forEach((item2) => {
+                  if (item2.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).district?.cityname) {
+                    item2.select = true;
+                    this.areaList.forEach((element) => {
+                      if (element.parentcode == item2.citycode) {
+                        element.select = false;
+                        this.streetArray.push(element);
+                      }
+                    });
+                    this.streetArray.forEach((item3) => {
+                      if (item3.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).street?.cityname) {
+                        item3.select = true;
+                        this.areaList.forEach((element) => {
+                          if (element.parentcode == item3.citycode) {
+                            element.select = false;
+                            this.communityArray.push(element);
+                          }
+                        });
+                        this.communityArray.forEach((item4) => {
+                          if (item4.cityname == JSON.parse(window.localStorage.getItem("positionInfo")).community?.cityname) {
+                            item4.select = true;
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
             }
           });
         }
@@ -161,8 +166,15 @@ export default {
   },
   methods: {
     async getaddress() {
-      let res = await catalog();
-      this.areaList = res.data;
+      let dataForm = {
+        queryCondition: {
+          queryColums: ["citycode", "parentcode", "cityname", "leval"],
+        },
+        orderBy: "citycode",
+        orderSort: "DESC",
+      };
+      let res = await catalog(dataForm);
+      this.areaList = res.data.results;
       this.provinceArray = this.areaList.filter((item) => {
         return item.leval == 4;
       });
@@ -296,52 +308,86 @@ export default {
         this.activeName = "zero";
       }
       if (JSON.parse(window.localStorage.getItem("positionInfo"))?.city) {
-        this.activeName = "second";
+        this.activeName = "first";
       }
-      if (JSON.parse(window.localStorage.getItem("positionInfo"))?.district) {
-        this.activeName = "third";
-      }
-      if (JSON.parse(window.localStorage.getItem("positionInfo"))?.street) {
-        this.activeName = "fourth";
+      if (!this.customConfig.是否二级) {
+        if (JSON.parse(window.localStorage.getItem("positionInfo"))?.city) {
+          this.activeName = "second";
+        }
+        if (JSON.parse(window.localStorage.getItem("positionInfo"))?.district) {
+          this.activeName = "third";
+        }
+        if (JSON.parse(window.localStorage.getItem("positionInfo"))?.street) {
+          this.activeName = "fourth";
+        }
       }
       this.cityArray = JSON.parse(window.localStorage.getItem("cityArray") || "[]") || [];
-      this.districtArray = JSON.parse(window.localStorage.getItem("districtArray") || "[]") || [];
-      this.streetArray = JSON.parse(window.localStorage.getItem("streetArray") || "[]") || [];
-      this.communityArray = JSON.parse(window.localStorage.getItem("communityArray") || "[]") || [];
+      if (!this.customConfig.是否二级) {
+        this.districtArray = JSON.parse(window.localStorage.getItem("districtArray") || "[]") || [];
+        this.streetArray = JSON.parse(window.localStorage.getItem("streetArray") || "[]") || [];
+        this.communityArray = JSON.parse(window.localStorage.getItem("communityArray") || "[]") || [];
+      }
       this.popShow = false;
     },
     sureChoose() {
+      let message = {};
+      if (this.customConfig.是否二级) {
+        if (this.activeName == "zero") {
+          this.provinceArray.forEach((item) => {
+            if (item.select) {
+              message.province = item;
+            }
+            this.cityArray.forEach((item) => {
+              item.select = false;
+            });
+          });
+        }
+        if (this.activeName == "first") {
+          this.provinceArray.forEach((item) => {
+            if (item.select) {
+              message.province = item;
+            }
+          });
+          this.cityArray.forEach((item) => {
+            if (item.select) {
+              message.city = item;
+            }
+          });
+        }
+      } else {
+        window.localStorage.setItem("provinceArray", JSON.stringify(this.provinceArray));
+        window.localStorage.setItem("cityArray", JSON.stringify(this.cityArray));
+        window.localStorage.setItem("streetArray", JSON.stringify(this.streetArray));
+        window.localStorage.setItem("districtArray", JSON.stringify(this.districtArray));
+        window.localStorage.setItem("communityArray", JSON.stringify(this.communityArray));
+        this.provinceArray.forEach((item) => {
+          if (item.select) {
+            message.province = item;
+          }
+        });
+        this.cityArray.forEach((item) => {
+          if (item.select) {
+            message.city = item;
+          }
+        });
+        this.streetArray.forEach((item) => {
+          if (item.select) {
+            message.street = item;
+          }
+        });
+        this.districtArray.forEach((item) => {
+          if (item.select) {
+            message.district = item;
+          }
+        });
+        this.communityArray.forEach((item) => {
+          if (item.select) {
+            message.community = item;
+          }
+        });
+      }
       window.localStorage.setItem("provinceArray", JSON.stringify(this.provinceArray));
       window.localStorage.setItem("cityArray", JSON.stringify(this.cityArray));
-      window.localStorage.setItem("streetArray", JSON.stringify(this.streetArray));
-      window.localStorage.setItem("districtArray", JSON.stringify(this.districtArray));
-      window.localStorage.setItem("communityArray", JSON.stringify(this.communityArray));
-      let message = {};
-      this.provinceArray.forEach((item) => {
-        if (item.select) {
-          message.province = item;
-        }
-      });
-      this.cityArray.forEach((item) => {
-        if (item.select) {
-          message.city = item;
-        }
-      });
-      this.streetArray.forEach((item) => {
-        if (item.select) {
-          message.street = item;
-        }
-      });
-      this.districtArray.forEach((item) => {
-        if (item.select) {
-          message.district = item;
-        }
-      });
-      this.communityArray.forEach((item) => {
-        if (item.select) {
-          message.community = item;
-        }
-      });
       window.localStorage.setItem("positionInfo", JSON.stringify(message));
       this.triggerEvent("positionChange", JSON.parse(window.localStorage.getItem("positionInfo")));
       this.popShow = false;
@@ -354,7 +400,15 @@ export default {
       };
       requeryAddressByCoordinate(message).then((res) => {
         this.requeryAddressInfo = res.data;
-        this.nowCity = res.data.address_component.city;
+        if (!this.customConfig.是否二级 && this.requeryAddressInfo.address_component.street) {
+          this.nowCity = res.data.address_component.street;
+        } else if (!this.customConfig.是否二级 && this.requeryAddressInfo.address_component.district) {
+          this.nowCity = res.data.address_component.district;
+        } else if (this.requeryAddressInfo.address_component.city) {
+          this.nowCity = res.data.address_component.city;
+        } else {
+          this.nowCity = res.data.address_component.province;
+        }
         this.dialogShow = true;
       });
     },
@@ -371,22 +425,30 @@ export default {
     confirmDialog() {
       this.provinceArray.forEach((element) => {
         if (element.cityname == this.requeryAddressInfo.ad_info.province) {
-          element.select = true;
           this.choseProvince(element, 1);
+          element.select = true;
           this.cityArray.forEach((item) => {
-            if (item.cityname == this.requeryAddressInfo.ad_info.city) {
-              item.select = true;
+            if (item.cityname == this.requeryAddressInfo.address_component.city) {
               this.choseCity(item, 1);
-              this.districtArray.forEach((item2) => {
-                if (item2.cityname == this.requeryAddressInfo.ad_info.district) {
-                  this.choseDistrict(item2, 1);
-                  this.streetArray.forEach((item3) => {
-                    if (item3.cityname == this.requeryAddressInfo.address_reference.town.title) {
-                      this.choseStreet(item3, 1);
-                    }
-                  });
-                }
-              });
+              item.select = true;
+              this.nowCityName = item.cityname;
+              this.activeName = "first";
+              if (!this.customConfig.是否二级) {
+                this.districtArray.forEach((item2) => {
+                  if (item2.cityname == this.requeryAddressInfo.ad_info.district) {
+                    this.choseDistrict(item2, 1);
+                    this.nowCityName = item.cityname;
+                    this.activeName = "second";
+                    this.streetArray.forEach((item3) => {
+                      if (item3.cityname == this.requeryAddressInfo.address_reference.town.title) {
+                        this.choseStreet(item3, 1);
+                        this.nowCityName = item.cityname;
+                        this.activeName = "third";
+                      }
+                    });
+                  }
+                });
+              }
             }
           });
         }
@@ -417,13 +479,13 @@ export default {
      */
     triggerEvent(type, payload) {
       console.log(payload);
-      if (payload.community) {
+      if (payload.community && !this.customConfig.是否二级) {
         this.nowCityName = payload.community.cityname;
         payload = payload.community.citycode;
-      } else if (payload.street) {
+      } else if (payload.street && !this.customConfig.是否二级) {
         this.nowCityName = payload.street.cityname;
         payload = payload.street.citycode;
-      } else if (payload.district) {
+      } else if (payload.district && !this.customConfig.是否二级) {
         this.nowCityName = payload.district.cityname;
         payload = payload.district.citycode;
       } else if (payload.city) {

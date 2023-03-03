@@ -1,7 +1,7 @@
 <template>
   <div :id="id" ref="canvas-secondary" class="canvas-secondary">
     <div class="block" @click="goPhone">
-      <img src="../../../pluginTemp/images/phone.png" alt=""  :width="this.configuration?.form?.iconSize || '36px'" />
+      <img src="../../../pluginTemp/images/phone.png" alt="" :width="this.configuration?.form?.iconSize || '36px'" />
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.value, 29);
     //此方法封装了事件注册，不可删除
     this.mainInit(this);
     this.initData();

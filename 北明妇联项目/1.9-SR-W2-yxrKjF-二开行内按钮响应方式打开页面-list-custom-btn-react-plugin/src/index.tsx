@@ -1,11 +1,12 @@
 /* 可以考虑在发布的代码里移除这个css */
-import React from "react";
-import ReactDOM from "react-dom";
+// import React from "react";
+// import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import styled from "styled-components";
 // import { ResponseDataHoc } from "@sd-ui/custom-plugin";  // 响应式能力
-
+const React =window.React
+const ReactDOM =window.ReactDOM
 // type ComponentType = "set" | "add" | "child" | "table" | "preview";
 
 const AppContainer = styled.div`
