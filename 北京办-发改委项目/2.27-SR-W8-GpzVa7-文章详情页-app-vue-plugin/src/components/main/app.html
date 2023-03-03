@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <script src="../dist/html2canvas.min.js"></script>
+      <script src="../dist/FileSaver.min.js"></script>
+      <script src="../dist/export-word.min.js"></script>
+      <style>
+         .main {
+            width: 800px;
+            margin: auto;
+         }
+
+         .bs-example-bg-classes p {
+            padding: 15px;
+         }
+
+         #echart-block {
+            width: 500px;
+            height: 300px;
+         }
+
+         button {
+            position: fixed;
+            left: 0;
+            top: 20px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="main">
+         <h1>h1. Bootstrap heading</h1>
+         <h2>h2. Bootstrap heading</h2>
+         For example, <code>&lt;section&gt;</code> should be wrapped as inline.
+         <h1>echart图表</h1>
+         <div id="echart-block" class="need-to-img">123</div>
+         <div class="bs-example bs-example-bg-classes" data-example-id="contextual-backgrounds-helpers">
+            <p class="bg-primary">Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+            <p class="bg-danger">此处会导成图片</p>
+         </div>
+         <img src="./chelizi.jpg" alt="..." class="img-rounded" />
+         <h1>table</h1>
+         <div class="need-to-img">
+            <table class="table">
+               <tr>
+                  <th>日期</th>
+                  <th>姓名</th>
+                  <th>地址</th>
+               </tr>
+               <tr>
+                  <td>2016-05-02</td>
+                  <td>王小虎</td>
+                  <td>上海市普陀区金沙江路 1518 弄'</td>
+               </tr>
+               <tr>
+                  <td>2016-03-21</td>
+                  <td>张小花</td>
+                  <td>上海市普陀区金沙江路 1512 弄'</td>
+               </tr>
+               <tr>
+                  <td>2016-01-4</td>
+                  <td>李晓东</td>
+                  <td>上海市普陀区金沙江路 1513 弄'</td>
+               </tr>
+               <tr>
+                  <td>2016-04-02</td>
+                  <td>王大哈</td>
+                  <td>上海市普陀区金沙江路 1522 弄'</td>
+               </tr>
+               <tr>
+                  <td>2016-05-12</td>
+                  <td>李晓春</td>
+                  <td>上海市普陀区金沙江路 1518 弄'</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <button type="button" class="btn btn-primary">download</button>
+
+      <script>
+         const wrap = document.querySelector(".main");
+         document.getElementsByTagName("button")[0].onclick = function () {
+            exportWord(wrap, {
+               fileName: "测试文件",
+               toImg: [".need-to-img", ".bg-danger"], //将指定部分导成图片
+               success() {
+                  //导出成功之后调用
+                  alert("导出成功");
+               },
+            });
+         };
+      </script>
+   </body>
+</html>

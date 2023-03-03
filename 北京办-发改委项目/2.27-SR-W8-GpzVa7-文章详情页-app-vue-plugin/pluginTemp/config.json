@@ -1,0 +1,22 @@
+{
+  "id": "41663061-3dfb-4c39-a8c2-39bf9e336793",
+  "type": "app",
+  "main": "app.3581e925.js",
+  "version": "2",
+  "configuration": true,
+  "props": {
+    "type": "customize",
+    "img": "APP_0001.png",
+    "name": "应用二开_vue",
+    "loadStyle": 0,
+    "lib": [],
+    "css_script": [],
+    "customconf": [
+      "id",
+      "资产ID"
+    ]
+  },
+  "requirement-number": "SR-W8-GpzVa7",
+  "requirement-name": "文章详情页",
+  "suggestedFolderName": "2.27-SR-W8-GpzVa7-文章详情页-app-react-plugin"
+}
