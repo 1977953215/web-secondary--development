@@ -1,7 +1,7 @@
 <template>
    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="占位符">
-         <el-input v-model="form.placeholder"></el-input>
+      <el-form-item label="是否禁用">
+         <el-switch v-model="form.isDisabled"></el-switch>
       </el-form-item>
    </el-form>
 </template>
@@ -11,19 +11,13 @@ export default {
    data() {
       return {
          form: {
-            placeholder: "",
+            isDisabled: "",
          },
       };
    },
 
    watch: {
-      "form.size": function (value, oldValue) {
-         this.onFormLayoutChange();
-      },
-      "form.placeholder": function (value, oldValue) {
-         this.onFormLayoutChange();
-      },
-      "form.allowClear": function (value, oldValue) {
+      "form.isDisabled": function (value, oldValue) {
          this.onFormLayoutChange();
       },
    },

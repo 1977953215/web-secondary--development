@@ -29,13 +29,13 @@
             <template slot-scope="scope">
                <el-button type="text" class="event_count" @click="handleEditButton(scope.row)">编辑</el-button>
                <el-popconfirm title="确认删除这条记录吗？" @confirm="handleDeleteButton(scope.$index)">
-                  <el-button slot="reference" type="text">删除</el-button>
+                  <el-button slot="reference" type="text" :disabled="dialogType ? true : false">删除</el-button>
                </el-popconfirm>
             </template>
          </el-table-column>
          <!-- 新增 -->
          <div slot="append" class="table_footer">
-            <div class="footer_button" @click="handleAddButton">新增公式</div>
+            <div class="footer_button" @click="handleAddButton" :style="dialogType ? 'pointer-events: none;' : ''">新增公式</div>
          </div>
       </el-table>
       <!-- 单位转换 & 转换关系 -->
@@ -76,7 +76,7 @@
       </div>
       <!-- 汇总计算 -->
       <div class="gather_button">
-         <el-button type="primary" size="small" @click="hanldeGatherButton">汇总计算</el-button>
+         <el-button type="primary" size="small" @click="hanldeGatherButton" :disabled="dialogType ? true : false">汇总计算</el-button>
       </div>
       <!-- 计算输入框 -->
       <div class="gather_box">
@@ -106,7 +106,7 @@
                <p>公式类型</p>
             </el-col>
             <el-col :span="9">
-               <el-select v-model="formulaTypeSelect" placeholder="请选择" @change="handleFormulaTypeSelect" clearable>
+               <el-select v-model="formulaTypeSelect" placeholder="请选择" @change="handleFormulaTypeSelect" clearable :disabled="dialogType ? true : false">
                   <el-option v-for="(item, index) in formulaTypeData" :key="index" :label="item.type_of_formula" :value="item.type_of_formula"> </el-option>
                </el-select>
             </el-col>
@@ -114,7 +114,7 @@
                <p>公式名称</p>
             </el-col>
             <el-col :span="9">
-               <el-select v-model="formulaNameSelect" placeholder="请选择" @change="handleFormulaNameSelect" clearable>
+               <el-select v-model="formulaNameSelect" placeholder="请选择" @change="handleFormulaNameSelect" clearable :disabled="dialogType ? true : false">
                   <el-option v-for="(item, index) in formulaNameData" :key="index" :label="item.formula_name" :value="item.formula_name"> </el-option>
                </el-select>
             </el-col>
@@ -130,7 +130,7 @@
             <div class="row_box">
                <el-col :span="24" class="params_content" v-for="(item, index) in formulaParamsData" :key="index">
                   <div class="content_title">{{ fiflterParams(item.label) }} ：</div>
-                  <el-input v-model="item.value"></el-input>
+                  <el-input v-model="item.value" :disabled="dialogType ? true : false"></el-input>
                </el-col>
             </div>
          </el-row>
@@ -141,7 +141,7 @@
          </el-row>
          <!-- 底部按钮 -->
          <div slot="footer" class="bottom_button">
-            <el-button size="small" type="primary" @click="handleFormulaSaveButton">确 定</el-button>
+            <el-button size="small" type="primary" @click="handleFormulaSaveButton" :disabled="dialogType ? true : false">确 定</el-button>
             <el-button size="small" @click="resetFormulaDialog">取 消</el-button>
          </div>
       </el-dialog>
@@ -154,6 +154,10 @@ import "./countDialog.less";
 import { queryFormulaTypeData, queryFormulaNameData } from "../api/asset";
 
 export default {
+   props: {
+      saveNowData: Function,
+   },
+
    data() {
       return {
          // 计算弹窗开关
@@ -198,6 +202,9 @@ export default {
 
          // 消耗系数
          stuffCoefficient: "",
+
+         // 打开的弹窗类型
+         dialogType: null,
       };
    },
 
@@ -210,8 +217,9 @@ export default {
       },
 
       // 打开计算弹窗
-      openCountDialog(row) {
+      openCountDialog(row, type) {
          this.isGather = true;
+         this.dialogType = type;
 
          this.countData = row;
          this.material_demand = row.material_demand;
@@ -303,6 +311,9 @@ export default {
 
          // 关闭弹窗
          this.countDialogIsShow = false;
+
+         // 保存数据
+         this.saveNowData();
       },
       // 内嵌弹窗确认
       handleFormulaSaveButton() {

@@ -1,29 +1,6 @@
 <template>
    <div class="outermest_matter">
-      <!-- <el-button type="primary" style="margin-bottom: 10px" size="small" @click="do_EventCenter_getParentID({ dataId: '99', assetId: 'ae619019-4461-fe8d-d70d-a15672135d29' })">获取表单数据</el-button>
-      <el-button type="primary" style="margin-bottom: 10px" size="small" @click="do_EventCenter_validateForm()">校验表单</el-button>
-      <el-button
-         type="primary"
-         style="margin-bottom: 10px"
-         size="small"
-         @click="
-            do_EventCenter_pushData({
-               value: [
-                  {
-                     material_code: '123',
-                     material_name: '456',
-                     material_demand: '123',
-                     material_purchase_main: '123',
-                     main_unit: '123',
-                     material_purchase_auxiliary: '123',
-                     formulas_flag: [],
-                  },
-               ],
-            })
-         "
-         >传入数据</el-button
-      >
-      <el-button type="primary" @click="handleSaveButton" size="small">保存数据</el-button> -->
+      <!-- <el-button type="primary" style="margin-bottom: 10px" size="small" @click="do_EventCenter_validateForm()">校验表单</el-button> -->
 
       <!-- 标题 -->
       <div class="matter_title">物料清单</div>
@@ -31,6 +8,7 @@
        <el-form :model="matterDataForm" ref="matterDataForm" @submit.native.prevent size="small">
          <!-- 物料清单 -->
          <el-table :data="matterDataForm.matterData" border>
+            <!-- 暂无数据 -->
             <template slot="empty">
                <svg t="1677566804010" class="icon" viewBox="0 0 1638 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3037" width="64" height="40">
                   <path
@@ -56,17 +34,18 @@
                </svg>
                <div class="empty_title">暂无数据</div>
             </template>
+
             <!-- 物料编码 -->
             <el-table-column label="物料编码" align="center">
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.material_code" :disabled="true" size="small" />
+                  <el-input v-model="scope.row.material_code" disabled size="small" />
                </template>
             </el-table-column>
 
             <!-- 物料名称 -->
             <el-table-column label="物料名称" align="center">
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.material_name" :disabled="true" size="small" />
+                  <el-input v-model="scope.row.material_name" disabled size="small" />
                </template>
             </el-table-column>
 
@@ -75,6 +54,7 @@
                <template slot-scope="scope">
                    <el-form-item :prop="`matterData.${scope.$index}.material_demand`" :rules="{ required: true, message: '请输入材料需求量', trigger: 'blur' }">
                      <el-input
+                        :disabled="disabledAll"
                         :class="scope.row.formulas_flag.material_demand ? 'red_text' : 'black_text'"
                         v-model="scope.row.material_demand"
                         @change="changeInputValue(scope.row.formulas_flag, 'material_demand')"
@@ -89,6 +69,7 @@
                <template slot-scope="scope">
                    <el-form-item :prop="`matterData.${scope.$index}.material_purchase_main`" :rules="{ required: true, message: '请输入采购量（主）', trigger: 'blur' }">
                      <el-input
+                        :disabled="disabledAll"
                         :class="scope.row.formulas_flag.material_purchase_main ? 'red_text' : 'black_text'"
                         v-model="scope.row.material_purchase_main"
                         @change="changeInputValue(scope.row.formulas_flag, 'material_purchase_main')"
@@ -101,7 +82,7 @@
             <!-- 主单位 -->
             <el-table-column label="主单位" align="center">
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.main_unit" :disabled="true" size="small" />
+                  <el-input v-model="scope.row.main_unit" disabled size="small" />
                </template>
             </el-table-column>
 
@@ -110,6 +91,7 @@
                <template slot-scope="scope">
                    <el-form-item :prop="`matterData.${scope.$index}.material_purchase_auxiliary`" :rules="{ required: true, message: '请输入采购量（副）', trigger: 'blur' }">
                      <el-input
+                        :disabled="disabledAll"
                         :class="scope.row.formulas_flag.material_purchase_auxiliary ? 'red_text' : 'black_text'"
                         @change="changeInputValue(scope.row.formulas_flag, 'material_purchase_auxiliary')"
                         v-model="scope.row.material_purchase_auxiliary"
@@ -122,28 +104,28 @@
             <!-- 副单位 -->
             <el-table-column label="副单位" align="center">
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.auxiliary_unit" :disabled="true" size="small" />
+                  <el-input v-model="scope.row.auxiliary_unit" disabled size="small" />
                </template>
             </el-table-column>
 
             <!-- 材料标准 -->
             <el-table-column label="材料标准" align="center">
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.standard_materials" size="small" />
+                  <el-input v-model="scope.row.standard_materials" :disabled="disabledAll" size="small" @change="saveNowData" />
                </template>
             </el-table-column>
 
             <!-- 补充说明 -->
             <el-table-column label="补充说明" align="center">
                <template slot-scope="scope">
-                  <el-input v-model="scope.row.additional_note" size="small" />
+                  <el-input v-model="scope.row.additional_note" :disabled="disabledAll" size="small" @change="saveNowData" />
                </template>
             </el-table-column>
 
             <!-- 供方 -->
             <el-table-column label="供方" align="center">
                <template slot-scope="scope">
-                  <el-select v-model="scope.row.whether_workshop_supply" placeholder="请选择" size="small">
+                  <el-select v-model="scope.row.whether_workshop_supply" placeholder="请选择" size="small" @change="saveNowData" :disabled="disabledAll">
                      <el-option label="是" value="1"></el-option>
                      <el-option label="否" value="0"></el-option>
                   </el-select>
@@ -153,16 +135,16 @@
             <!-- 操作 -->
             <el-table-column label="操作" align="center">
                <template slot-scope="scope">
-                  <el-button type="text" class="event_count" @click="handleCountButton(scope.row)">计算</el-button>
+                  <el-button type="text" class="event_count" @click="handleCountButton(scope.row)" :disabled="disabledAll">计算</el-button>
                   <el-popconfirm title="确认删除这条记录吗？" @confirm="handleDeleteButton(scope.$index)">
-                     <el-button slot="reference" type="text">删除</el-button>
+                     <el-button slot="reference" type="text" :disabled="disabledAll">删除</el-button>
                   </el-popconfirm>
                </template>
             </el-table-column>
 
             <!-- 新增 -->
             <div slot="append" class="table_footer" width="130">
-               <div class="footer_button" @click="handleAddButton">新增</div>
+               <div class="footer_button" :style="disabledAll ? 'pointer-events: none' : ''" @click="handleAddButton">新增</div>
             </div>
          </el-table>
 
@@ -206,7 +188,7 @@
          </el-dialog>
 
          <!-- 计算弹窗 -->
-         <CountDialog ref="countDialog"></CountDialog>
+         <CountDialog ref="countDialog" :saveNowData="saveNowData"></CountDialog>
       </el-form>
    </div>
 </template>
@@ -215,7 +197,7 @@
 import eventActionDefine from "./msgCompConfig";
 import "./index.less";
 
-import { queryMatterData, queryMatteList, saveMatterData } from "../api/asset";
+import { queryMatteList } from "../api/asset";
 
 import CountDialog from "../common/countDialog.vue";
 
@@ -233,6 +215,8 @@ export default {
          data: this.customConfig.data,
          propsConfiguration: this.customConfig.configuration || "{}",
          configuration: {},
+
+         disabledAll: false,
 
          // 主表ID
          dataId: "",
@@ -271,22 +255,17 @@ export default {
       //  注册逻辑控制
       window?.componentCenter?.register(this.customConfig.componentId, "comp", this, eventActionDefine);
       this.configuration = JSON.parse(this.propsConfiguration);
+
+      if (this.propsConfiguration) {
+         this.disabledAll = JSON.parse(this.propsConfiguration).isDisabled;
+      }
+
+      if (this.data) {
+         this.matterDataForm.matterData = JSON.parse(this.data);
+      }
    },
 
    methods: {
-      // 获取物料清单
-      getMatterData(dataID, assetID) {
-         queryMatterData(dataID, assetID).then((res) => {
-            res.data.forEach((item) => {
-               if (item.formulas_flag) {
-                  item.formulas_flag = JSON.parse(item.formulas_flag);
-               }
-            });
-            console.log("res.data--->", res.data);
-            this.matterDataForm.matterData = res.data;
-         });
-      },
-
       // 判断新增物料清单是否可选中
       addMatterCheckType(value) {
          // 过滤数据
@@ -304,6 +283,9 @@ export default {
       changeInputValue(row, key) {
          // 修改为黑色
          row[key] = false;
+
+         // 保存数据
+         this.saveNowData();
       },
 
       // 计算
@@ -326,9 +308,9 @@ export default {
          // 获取表格数据
          queryMatteList(dataForm).then((res) => {
             // 赋值
-            this.addMatterDataList = res.data;
-            // this.addMatterDataList = res.data.informationPOList;
-            // this.total = res.data.total_num;
+            // this.addMatterDataList = res.data;
+            this.addMatterDataList = res.data.informationPOList;
+            this.total = res.data.total_num;
          });
          // 打开弹窗
          this.matterDialogIsShow = true;
@@ -367,8 +349,8 @@ export default {
             // 不存在则添加新数据
             if (!selectValue[0]) {
                item.material_demand = "";
-               item.material_purchase_auxiliary = "";
                item.material_purchase_main = "";
+               item.material_purchase_auxiliary = "";
                item.formulas_flag = {};
                item.standard_materials = "";
                item.additional_note = "";
@@ -382,6 +364,9 @@ export default {
 
          // 关闭弹窗
          this.matterDialogIsShow = false;
+
+         // 储存当前值
+         this.saveNowData();
       },
       // 取消
       handleCancelButton() {
@@ -395,41 +380,28 @@ export default {
          this.matterDialogIsShow = false;
       },
 
-      // 保存
-      handleSaveButton() {
-         this.$refs["matterDataForm"].validate((valid) => {
-            if (!valid) return;
-            this.matterDataForm.matterData.forEach((item) => {
-               item.parent_id = this.dataId;
-            });
-            console.log("matterDataForm--->", this.matterDataForm.matterData);
+      // 将当前值保存至平台
+      saveNowData() {
+         let { onChange } = this.customConfig;
 
-            saveMatterData(this.assetId, this.matterDataForm.matterData).then((res) => {
-               console.log("保存");
-            });
-         });
+         // 保存新增的数据
+         onChange(JSON.stringify(this.matterDataForm.matterData));
+         // console.log(JSON.stringify(this.matterDataForm.matterData));
       },
 
-      // 获取表ID
-      do_EventCenter_getParentID({ dataId, assetId }) {
-         console.log("表ID--->");
-         this.dataId = dataId;
-         this.assetId = assetId;
-         this.getMatterData(dataId, assetId);
-      },
       // 校验表单
       do_EventCenter_validateForm() {
-         console.log("校验表单--->");
+         let isSave = "false";
+
          this.$refs["matterDataForm"].validate((valid) => {
             if (!valid) return;
+            isSave = "true";
+            this.saveNowData();
          });
-      },
-      // 添加数据
-      do_EventCenter_pushData({ value }) {
-         console.log("添加数据--->", value);
-         value?.forEach((item) => {
-            this.matterDataForm.matterData.push(item);
-         });
+
+         return {
+            isSave,
+         };
       },
       // 组件名称
       Event_Center_getName() {

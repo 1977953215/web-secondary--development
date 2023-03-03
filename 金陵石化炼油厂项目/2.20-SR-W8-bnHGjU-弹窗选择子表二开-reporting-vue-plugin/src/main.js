@@ -32,8 +32,8 @@ Vue.prototype.$message = Message;
 if (process.env.NODE_ENV !== "production") {
    const appArr = [
       { title: "新增/编辑 主表组件", type: "add" },
-      { title: "设计页属性组件", type: "designConfiguration" },
-      { title: "设计页组件", type: "set" },
+      // { title: "设计页组件", type: "set" },
+      { title: "详情页组件", type: "Preview" },
    ];
 
    const customConfig = {
@@ -66,7 +66,7 @@ if (process.env.NODE_ENV !== "production") {
                   return (
                      <div class="components">
                         <div class="title">{item.title}：</div>
-                        <App style={{ width: "calc(100% - 220px)", minHeight: "400px" }} customConfig={customConfig} type={item.type} />
+                        <App style={{ width: "calc(100% - 220px)" }} customConfig={customConfig} type={item.type} />
                      </div>
                   );
                })}
