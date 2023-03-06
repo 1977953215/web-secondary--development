@@ -1,7 +1,7 @@
 {
   "id": "c23d3b02-fd9b-461e-8ab1-c1edf050fc58",
   "type": "app-sso-custom",
-  "main": "main.c74a98a1.js",
+  "main": "main.9d12ce49.js",
   "version": "2",
   "props": {
     "img": "custom_table.png",
