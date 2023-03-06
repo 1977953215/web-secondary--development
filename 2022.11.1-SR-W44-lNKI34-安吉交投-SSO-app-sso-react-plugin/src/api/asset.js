@@ -1,10 +1,10 @@
 import request from "./request";
 
 export const queryCurrentUser = () =>
-  request.get(`/system/authority/user`, {
-    useCache: true,
-    cacheDuration: 3000,
-  });
+   request.get(`/system/authority/user`, {
+      useCache: true,
+      cacheDuration: 3000,
+   });
 
 // 获取sso配置
 export const isSso = (ssoType) => request.get(`/sso/server/isSso?ssoType=${ssoType}`);

@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
 import { queryCurrentUser, ssoLoginNew, isSso, tokenIsValid, setCookie } from "./api/asset";
-
 import Cookies from "js-cookie";
+
+const { useEffect } = window.React;
 
 const App = (props) => {
    const { loginStatus = () => {}, updateProcess } = props;
@@ -24,7 +25,7 @@ const App = (props) => {
             const ssoType = getQueryString("ssoType");
             const { data: ssoResult } = await isSso(ssoType);
 
-            console.log("未登录", ssoResult);
+            console.log("未登录-->", ssoResult);
 
             // 获取sso配置，存在配置则走sso跳转逻辑，否则走正常跳转逻辑
             if (ssoResult) {
@@ -35,13 +36,14 @@ const App = (props) => {
                   // 判断从url或cookies中取token
                   if (ssoResult?.tokenFlag === 1) {
                      token = getQueryString(tokenName);
-                     console.log("<--从Url中获取Token-->", token);
                   } else if (ssoResult?.tokenFlag === 2) {
                      token = getQueryStringCookies(tokenName);
                   }
+                  console.log("<--获取的Token-->", token);
 
                   // 如果没有token直接跳转配置的地址
                   if (!token) {
+                     console.log("<--未获取到token-->");
                      failLogin(ssoResult);
                      return;
                   }
@@ -49,14 +51,15 @@ const App = (props) => {
                   // 校验token是否有效
                   tokenIsValid(token)
                      .then((res) => {
-                        setCookie(token);
-                        window.SSO_IS_LOGIN = true;
-                        loginStatus({
-                           flag: true,
-                           ssoResult,
+                        console.log("<--校验token通过-->");
+                        setCookie(token).then(() => {
+                           window.SSO_IS_LOGIN = true;
+                           loginStatus({ flag: true, ssoResult });
+                           console.log("<--设置Cookie完成-->");
                         });
                      })
                      .catch((err) => {
+                        console.log("<--登录失败-->");
                         failLogin(ssoResult);
                      });
                } else {
@@ -66,6 +69,8 @@ const App = (props) => {
                failLogin();
             }
          } else {
+            console.log("已登录-->", ssoResult);
+
             const ssoType = getQueryString("ssoType");
             const { data: ssoResult } = await isSso(ssoType);
 
@@ -80,13 +85,16 @@ const App = (props) => {
                      token = getQueryStringCookies(tokenName);
                   }
 
+                  console.log("<--获取的Token-->", token);
+
                   if (token) {
                      tokenIsValid(token).then((res) => {
-                        setCookie(token);
-                        window.SSO_IS_LOGIN = true;
-                        loginStatus({
-                           flag: true,
-                           ssoResult,
+                        setCookie(token).then(() => {
+                           window.SSO_IS_LOGIN = true;
+                           loginStatus({
+                              flag: true,
+                              ssoResult,
+                           });
                         });
                      });
                   }
